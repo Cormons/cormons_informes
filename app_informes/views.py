@@ -3,9 +3,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import ensure_csrf_cookie
 import json
-
 from .utils import obtener_datos_cookies, renderizar_error, borrar_cookies_sesion
-from .services import comando_verificarToken, comando_chequesCartera
+from .services import comando_verificarToken, comando_chequesCartera, comando_permisosInformes
 
 @ensure_csrf_cookie
 def informes_view(request):
@@ -110,6 +109,21 @@ def chequesCartera_view(request):
         "chequesCartera": chequesCartera,
         "mensaje": mensaje
     }, status=200)
+
+@require_http_methods(["GET"])
+def permisosInformes_view(request):
+    """Endpoint AJAX para obtener módulos habilitados"""
+    token, _, _, error_mensaje = obtener_datos_cookies(request)
+    
+    if error_mensaje:
+        return JsonResponse({"error": error_mensaje}, status=401)
+    
+    resultado = comando_permisosInformes(token, request)
+    
+    if not resultado["estado"]:
+        return JsonResponse({"error": resultado["mensaje"]}, status=400)
+    
+    return JsonResponse({"informes": resultado["informes"]})
 
 def logout_view(request):
     print("==== LOGOUT VIEW INFORMES ====")

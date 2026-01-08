@@ -4,6 +4,8 @@ Incluye llamadas a APIs externas y validaciones
 """
 import logging
 from datetime import datetime
+
+from django.http import request
 from .tcp_client import enviar_consulta_tcp
 from .__init__ import APP_VERSION
 
@@ -54,11 +56,10 @@ def formatear_fecha(fecha_str):
     return fecha_str
 
 def comando_verificarToken(token, request):
-
     mensaje = {
         "Comando": "verificarToken",
         "Token": token,
-        "Vista": "INFORMES",
+        "Vista": "CONTROLSTOCK",
         "Version": APP_VERSION
     }
 
@@ -85,6 +86,35 @@ def comando_verificarToken(token, request):
         "nombre":  r.get("nombre", ""),
         "mensaje": r.get("mensaje", ""),
         "token":   r.get("token", "")
+    }
+
+def comando_permisosInformes(token, request):
+    mensaje = {
+        "Comando": "permisosInformes",
+        "Token": token,
+        "Vista": "INFORMES",
+        "Versión": "1"
+    }
+    r = enviar_consulta_tcp(mensaje, request=request)
+    
+    # Sin respuesta del servidor
+    if not r:
+        return {
+            "estado": False,
+            "mensaje": "Sin respuesta del servidor"
+        }
+
+    # Si viene estado = false, devolver exactamente lo que vino
+    if r.get("estado") is not True:
+        return {
+            "estado": False,
+            "mensaje": r.get("mensaje", "Token inválido")
+        }
+
+    return {
+        "estado": r.get("Estado") == "True",
+        "mensaje": r.get("Mensaje", ""),
+        "informes": r.get("Informes", [])
     }
 
 def comando_chequesCartera(token, usuario, request, parametros=None):

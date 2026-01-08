@@ -351,6 +351,42 @@
         document.getElementById('chequesResultados').classList.remove('d-none');
     }
 
+    function cargarPermisosModulos() {
+        fetch('/permisos-informes/')
+            .then(r => {
+                if (!r.ok) {
+                    return r.json().then(errData => {
+                        throw new Error(errData.error || 'Error desconocido');
+                    });
+                }
+                return r.json();
+            })
+            .then(data => {
+                const modulosPermitidos = data.informes;
+                
+                document.querySelectorAll('.module-tab').forEach(btn => {
+                    const modulo = btn.dataset.module;
+                    
+                    if (modulosPermitidos.includes(modulo)) {
+                        btn.disabled = false;
+                        btn.classList.remove('btn-outline-secondary');
+                        btn.classList.add('btn-outline-warning');
+                    }
+                });
+                
+                const primerPermitido = document.querySelector(`.module-tab[data-module="${modulosPermitidos[0]}"]`);
+                if (primerPermitido) {
+                    primerPermitido.classList.add('active');
+                    primerPermitido.click();
+                }
+            })
+            .catch(err => {
+                console.error('Error al cargar permisos:', err);
+                // 🆕 USAR TU MODAL BLOQUEANTE (sin redirección para que solo informe)
+                mostrarErrorBloqueante('Error al cargar permisos de módulos:\n\n' + err.message, null);
+            });
+    }
+
     // ============================================
     // CERRAR SESIÓN
     // ============================================
@@ -413,6 +449,9 @@
     document.addEventListener('DOMContentLoaded', function() {
         console.log('🚀 DOM cargado - Inicializando...');
         
+        // 🆕 LLAMAR A LA NUEVA FUNCIÓN AQUÍ
+        cargarPermisosModulos();
+        
         inicializarModales();
         inicializarTabs();
         
@@ -424,6 +463,7 @@
     // ============================================
 
     window.abrirModalChequesCartera = abrirModalChequesCartera;
+    window.mostrarErrorBloqueante = mostrarErrorBloqueante;
     //window.cerrarSesion = cerrarSesion;
     window.redirigirLogin = redirigirLogin;
 
