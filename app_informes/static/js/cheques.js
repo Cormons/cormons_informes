@@ -67,7 +67,7 @@
                     
                     // Badge para cruzado
                     const badgeCruzado = cheque.cruzado === 'SI' 
-                        ? '<span class="badge bg-secondary ms-1">Cruzado</span>' 
+                        ? '<span class="badge bg-info ms-1">Cruzado</span>' 
                         : '';
                     
                     const chequeDiv = document.createElement('div');
