@@ -3,7 +3,7 @@
 <div class="modal fade" id="modalChequesCartera" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header bg-light text-dark">
+            <div class="modal-header">
                 <h5 class="modal-title">
                     <i class="fas fa-money-check-alt me-2"></i>Cheques en Cartera
                 </h5>
@@ -40,131 +40,229 @@
 </div>
 
 <style>
-/* Estilos para filas expandibles */
+/* ============================================
+   MODAL HEADER - AMARILLO
+   ============================================ */
+#modalChequesCartera .modal-header {
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    border-bottom: none;
+}
+
+#modalChequesCartera .modal-title {
+    color: #000;
+    font-weight: 600;
+}
+
+#modalChequesCartera .modal-title i {
+    color: #000;
+}
+
+#modalChequesCartera .btn-close {
+    filter: none;
+}
+
+/* ============================================
+   FILAS EXPANDIBLES - CORPORATIVO
+   ============================================ */
 .cheque-row {
-    border: 1px solid #dee2e6;
+    border: 1px solid #dce1e6;
     border-radius: 8px;
-    padding: 12px 15px;
-    margin-bottom: 10px;
-    background: white;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+    background: #f7f9fb;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 }
 
 .cheque-row:hover {
-    background: #f8f9fa;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-color: #3498db;
 }
 
 .cheque-row-main {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
 }
 
-/* Primera línea: Icono + Fecha + Importe */
+/* ============================================
+   PRIMERA LÍNEA: FECHA + IMPORTE
+   ============================================ */
 .cheque-row-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
 .cheque-row-left {
     display: flex;
     align-items: center;
-    gap: 10px;
-    min-width: 0; /* Permite que flex-shrink funcione */
+    gap: 14px;
+    min-width: 0;
 }
 
 .cheque-expand-icon {
-    color: #6c757d;
-    transition: transform 0.3s;
+    color: #7f8c8d;
+    transition: transform 0.3s ease, color 0.3s;
     flex-shrink: 0;
+    font-size: 1rem;
 }
 
 .cheque-expand-icon.expanded {
     transform: rotate(90deg);
+    color: #3498db;
 }
 
 .cheque-fecha {
     font-weight: 600;
-    color: #495057;
+    color: #2c3e50;
     white-space: nowrap;
     flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.cheque-fecha::before {
+    content: "📅 ";
+    margin-right: 4px;
 }
 
 .cheque-importe {
     font-weight: 700;
-    color: #198754;
-    font-size: 1.1rem;
+    color: #27ae60;
+    font-size: 1.3rem;
     white-space: nowrap;
     flex-shrink: 0;
     text-align: right;
+    font-family: 'Courier New', monospace;
+    background: #e8f5e9;
+    padding: 6px 14px;
+    border-radius: 6px;
 }
 
-/* Segunda línea: Nombre del emisor */
+/* ============================================
+   SEGUNDA LÍNEA: EMISOR
+   ============================================ */
 .cheque-emisor {
-    color: #212529;
-    padding-left: 30px; /* Alinear con la fecha (icono + gap) */
+    color: #34495e;
+    padding-left: 44px;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
-/* Detalles expandibles */
+.cheque-emisor::before {
+    content: "👤 ";
+    margin-right: 4px;
+}
+
+/* ============================================
+   DETALLES EXPANDIBLES
+   ============================================ */
 .cheque-details {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
+    transition: max-height 0.4s ease;
     padding-top: 0;
     margin-top: 0;
+    background: white;
+    border-radius: 6px;
 }
 
 .cheque-details.expanded {
-    max-height: 200px;
-    padding-top: 15px;
-    margin-top: 10px;
-    border-top: 1px solid #e9ecef;
+    max-height: 250px;
+    padding: 16px;
+    margin-top: 12px;
+    border: 1px solid #ecf0f1;
 }
 
 .cheque-detail-item {
     display: flex;
-    padding: 5px 0;
-    color: #495057;
-    gap: 10px;
+    padding: 8px 0;
+    color: #34495e;
+    gap: 12px;
+    align-items: baseline;
+    border-bottom: 1px solid #f5f6fa;
+}
+
+.cheque-detail-item:last-of-type {
+    border-bottom: none;
 }
 
 .cheque-detail-label {
     font-weight: 600;
-    min-width: 100px;
-    color: #6c757d;
+    min-width: 110px;
+    color: #7f8c8d;
     flex-shrink: 0;
+    font-size: 0.9rem;
+}
+
+.cheque-detail-label::after {
+    content: ":";
 }
 
 .cheque-detail-value {
     word-wrap: break-word;
     overflow-wrap: break-word;
+    color: #2c3e50;
+    font-family: 'Courier New', monospace;
 }
 
+/* ============================================
+   BADGES - CORPORATIVO
+   ============================================ */
 .cheque-badges {
     display: flex;
-    gap: 5px;
-    margin-top: 8px;
+    gap: 8px;
+    margin-top: 10px;
     flex-wrap: wrap;
 }
 
-/* Responsive */
+.cheque-badges .badge {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    font-weight: 600;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cheque-badges .badge.bg-info {
+    background: #3498db !important;
+}
+
+.cheque-badges .badge.bg-secondary {
+    background: #95a5a6 !important;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 576px) {
+    .cheque-row {
+        padding: 16px 18px;
+    }
+    
     .cheque-fecha {
         font-size: 0.9rem;
     }
     
     .cheque-importe {
-        font-size: 1rem;
+        font-size: 1.15rem;
+        padding: 5px 12px;
     }
     
     .cheque-emisor {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        padding-left: 40px;
+    }
+    
+    .cheque-detail-label {
+        min-width: 95px;
+        font-size: 0.85rem;
     }
 }
 </style>
