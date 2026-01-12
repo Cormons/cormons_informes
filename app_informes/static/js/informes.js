@@ -280,7 +280,16 @@
         .catch(error => {
             console.error('❌ Error al consultar cheques:', error);
             document.getElementById('chequesLoading').classList.add('d-none');
-            
+
+            // 🚨 Cerrar el modal de cheques antes de mostrar el error bloqueante
+            const modalElement = document.getElementById('modalChequesCartera');
+            if (modalElement) {
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+            }
+
             // 🔴 TODOS los errores redirigen al login
             mostrarErrorBloqueante(error.message, 'https://cormons.app/');
         });
