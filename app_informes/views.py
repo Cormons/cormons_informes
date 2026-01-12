@@ -64,7 +64,7 @@ def chequesCartera_view(request):
     bancos = ["Banco Nación", "Banco Galicia", "Banco Santander", "BBVA", "Macro"]
     emisores = ["Juan Pérez", "María García", "Carlos López", "Ana Martínez", "Pedro Rodríguez"]
     
-    for i in range(10):
+    for i in range(5):
         fecha_cobro = (datetime.now() + timedelta(days=random.randint(1, 60))).strftime("%d/%m/%Y")
         cheque = {
             "fechaCobro": fecha_cobro,
