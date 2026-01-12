@@ -40,7 +40,24 @@
      */
     function mostrarErrorBloqueante(mensaje, redirectUrl) {
         console.log('🚫 Mostrando error bloqueante:', mensaje);
-        
+        // Ocultar otros modales abiertos (evitar que queden modales superpuestos)
+        try {
+            const modalChequesEl = document.getElementById('modalChequesCartera');
+            if (modalChequesEl) {
+                const inst = bootstrap.Modal.getInstance(modalChequesEl);
+                if (inst) inst.hide();
+            }
+
+            const modalAlertaEl = document.getElementById('modalAlerta');
+            if (modalAlertaEl) {
+                const inst2 = bootstrap.Modal.getInstance(modalAlertaEl);
+                if (inst2) inst2.hide();
+            }
+        } catch (e) {
+            // Ignorar si bootstrap no está disponible aún
+            console.warn('No se pudieron ocultar otros modales:', e);
+        }
+
         const mensajeEl = document.getElementById('errorBloqueanteTexto');
         const btnRedirect = document.getElementById('btn-redirect-bloqueante');
         
@@ -170,24 +187,33 @@
      */
     function abrirModalChequesCartera() {
         console.log('🔵 Abriendo modal de cheques...');
-        
         if (!modalChequesCartera) {
             console.error('❌ Modal de cheques no inicializado');
             alert('Error al abrir modal de cheques');
             return;
         }
-        
-        modalChequesCartera.show();
-        
-        // Resetear estado del modal
+
+        // Resetear estado del modal (preparar UI pero NO mostrarlo aún)
         document.getElementById('chequesLoading').classList.remove('d-none');
         document.getElementById('chequesError').classList.add('d-none');
         document.getElementById('chequesMensajeInfo').classList.add('d-none');
         document.getElementById('chequesResultados').classList.add('d-none');
-        
-        // Hacer petición (debe estar definida en informes.js)
+
+        // Llamar a la función de consulta; mostrar modal solo si la consulta es exitosa
         if (window.consultarChequesCartera) {
-            window.consultarChequesCartera();
+            window.consultarChequesCartera()
+                .then(() => {
+                    modalChequesCartera.show();
+                })
+                .catch(err => {
+                    // Evitar que quede abierto el modal de cheques y mostrar solo el bloqueante
+                    try {
+                        const inst = bootstrap.Modal.getInstance(document.getElementById('modalChequesCartera'));
+                        if (inst) inst.hide();
+                    } catch (e) { /* ignore */ }
+
+                    mostrarErrorBloqueante(err.message, 'https://cormons.app/');
+                });
         } else {
             console.error('❌ Función consultarChequesCartera no encontrada');
             mostrarErrorCheques('Error: función de consulta no disponible');

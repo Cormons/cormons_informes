@@ -159,7 +159,7 @@
      * Consultar cheques en cartera PRUEBA
      */
     function consultarChequesCartera() {
-    fetch('/cheques-cartera/')
+    return fetch('/cheques-cartera/')
         .then(response => {
             if (!response.ok) {
                 return response.json().then(err => {
@@ -276,22 +276,16 @@
             
             // Mostrar resultados
             document.getElementById('chequesResultados').classList.remove('d-none');
+
+            // Devolver data para quien invoque
+            return data;
         })
         .catch(error => {
             console.error('❌ Error al consultar cheques:', error);
             document.getElementById('chequesLoading').classList.add('d-none');
 
-            // 🚨 Cerrar el modal de cheques antes de mostrar el error bloqueante
-            const modalElement = document.getElementById('modalChequesCartera');
-            if (modalElement) {
-                const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                if (modalInstance) {
-                    modalInstance.hide();
-                }
-            }
-
-            // 🔴 TODOS los errores redirigen al login
-            mostrarErrorBloqueante(error.message, 'https://cormons.app/');
+            // Propagar el error al invocador para que decida qué modal mostrar
+            throw error;
         });
     }
 
