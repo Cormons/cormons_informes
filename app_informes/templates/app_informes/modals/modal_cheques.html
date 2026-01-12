@@ -1,0 +1,127 @@
+{% load static %}
+<!-- Modal: Cheques en Cartera -->
+<div class="modal fade" id="modalChequesCartera" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-light text-dark">
+                <h5 class="modal-title">
+                    <i class="fas fa-money-check-alt me-2"></i>Cheques en Cartera
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Loading -->
+                <div id="chequesLoading" class="text-center py-5">
+                    <div class="spinner-border text-warning" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Consultando cheques...</p>
+                </div>
+                <!-- Error -->
+                <div id="chequesError" class="alert alert-danger d-none">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span id="chequesErrorMensaje"></span>
+                </div>
+                <!-- Mensaje Info -->
+                <div id="chequesMensajeInfo" class="alert alert-info d-none">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <span id="chequesMensajeInfoTexto"></span>
+                </div>
+                <!-- Resultados -->
+                <div id="chequesResultados" class="d-none">
+                    <div id="chequesListaExpandible"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Estilos para filas expandibles */
+.cheque-row {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cheque-row:hover {
+    background: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.cheque-row-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.cheque-fecha {
+    font-weight: 600;
+    color: #495057;
+    min-width: 100px;
+}
+
+.cheque-emisor {
+    flex: 1;
+    color: #212529;
+}
+
+.cheque-importe {
+    font-weight: 700;
+    color: #198754;
+    font-size: 1.1rem;
+    min-width: 120px;
+    text-align: right;
+}
+
+.cheque-expand-icon {
+    color: #6c757d;
+    transition: transform 0.3s;
+    min-width: 20px;
+}
+
+.cheque-expand-icon.expanded {
+    transform: rotate(90deg);
+}
+
+.cheque-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.cheque-details.expanded {
+    max-height: 200px;
+    padding-top: 15px;
+    margin-top: 10px;
+    border-top: 1px solid #e9ecef;
+}
+
+.cheque-detail-item {
+    display: flex;
+    padding: 5px 0;
+    color: #495057;
+}
+
+.cheque-detail-label {
+    font-weight: 600;
+    min-width: 100px;
+    color: #6c757d;
+}
+
+.cheque-badges {
+    display: flex;
+    gap: 5px;
+    margin-top: 8px;
+}
+</style>
