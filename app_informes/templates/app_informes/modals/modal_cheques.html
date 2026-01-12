@@ -58,40 +58,60 @@
 
 .cheque-row-main {
     display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Primera línea: Icono + Fecha + Importe */
+.cheque-row-header {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 }
 
-.cheque-fecha {
-    font-weight: 600;
-    color: #495057;
-    min-width: 100px;
-}
-
-.cheque-emisor {
-    flex: 1;
-    color: #212529;
-}
-
-.cheque-importe {
-    font-weight: 700;
-    color: #198754;
-    font-size: 1.1rem;
-    min-width: 120px;
-    text-align: right;
+.cheque-row-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0; /* Permite que flex-shrink funcione */
 }
 
 .cheque-expand-icon {
     color: #6c757d;
     transition: transform 0.3s;
-    min-width: 20px;
+    flex-shrink: 0;
 }
 
 .cheque-expand-icon.expanded {
     transform: rotate(90deg);
 }
 
+.cheque-fecha {
+    font-weight: 600;
+    color: #495057;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cheque-importe {
+    font-weight: 700;
+    color: #198754;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+/* Segunda línea: Nombre del emisor */
+.cheque-emisor {
+    color: #212529;
+    padding-left: 30px; /* Alinear con la fecha (icono + gap) */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Detalles expandibles */
 .cheque-details {
     max-height: 0;
     overflow: hidden;
@@ -111,17 +131,40 @@
     display: flex;
     padding: 5px 0;
     color: #495057;
+    gap: 10px;
 }
 
 .cheque-detail-label {
     font-weight: 600;
     min-width: 100px;
     color: #6c757d;
+    flex-shrink: 0;
+}
+
+.cheque-detail-value {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .cheque-badges {
     display: flex;
     gap: 5px;
     margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .cheque-fecha {
+        font-size: 0.9rem;
+    }
+    
+    .cheque-importe {
+        font-size: 1rem;
+    }
+    
+    .cheque-emisor {
+        font-size: 0.9rem;
+    }
 }
 </style>

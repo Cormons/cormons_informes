@@ -52,13 +52,10 @@ def informes_view(request):
         "mensaje_inicial": mensaje_vfp,
     })
 
+@require_http_methods(["GET"])
 def chequesCartera_view(request):
-    """
-    Endpoint JSON que verifica token y devuelve la lista de cheques en cartera.
-    Método: GET
-    Cookies requeridas: 'authToken', 'connection_config' y 'user_usuario' (gestionadas por obtener_datos_cookies)
-    """
-
+    """Endpoint AJAX para obtener cheques en cartera"""
+    
     # 🔧 SIMULACIÓN - Comentar cuando VFP esté listo
     import random
     from datetime import datetime, timedelta
@@ -81,51 +78,37 @@ def chequesCartera_view(request):
         cheques_simulados.append(cheque)
     
     return JsonResponse({
-        "Estado": "True",
-        "Mensaje": "Datos simulados para pruebas",
-        "token": "token_simulado_123",
-        "CHEQUES": cheques_simulados
+        "CHEQUES": cheques_simulados,
+        "Mensaje": "Datos simulados para pruebas"
     })
-    # Obtener token, datos de conexión y usuario desde cookies
-    token, datos_conexion, usuario_cookie, error_mensaje = obtener_datos_cookies(request)
     
-    # Si hay un error, retornarlo con 401
-    if error_mensaje:
-        return JsonResponse({
-            "error": error_mensaje,
-            "redirect": "https://cormons.app/login/?logout=1"
-        }, status=401)
-
-    # Usar el usuario de la cookie directamente (ya no usamos sesiones)
-    usuario = usuario_cookie
-
-    respuesta_chequesCartera = comando_chequesCartera(token, usuario, request)
-    if not respuesta_chequesCartera:
-        return JsonResponse({"error": "Error al obtener cheques en cartera"}, status=500)
-
-    # Verificar si VFP respondió con error (token inválido, versión incorrecta, etc.)
-    if respuesta_chequesCartera.get("estado") is False:
-        # Retornar 401 incluyendo el mensaje devuelto por VFP para que el frontend
-        # pueda mostrar el detalle exacto antes de redirigir.
-        # NOTA: Ya no limpiamos sesión porque no la usamos - las cookies son manejadas por el frontend
-        mensaje_vfp = respuesta_chequesCartera.get('mensaje', 'No hay mensaje de la interfaz')
-        return JsonResponse({
-            "error": mensaje_vfp,
-            "redirect": "https://cormons.app/login/?logout=1"
-        }, status=401)
-
-    # Manejar ambas posibles claves de respuesta de VFP (cheques o chequesCartera)
-    chequesCartera = respuesta_chequesCartera.get("cheques", [])
-    mensaje = respuesta_chequesCartera.get("mensaje", "")
-
-    print(f"📦 DEBUG: respuesta_chequesCartera keys = {list(respuesta_chequesCartera.keys())}")
-    if mensaje:
-        print(f"📢 DEBUG: VFP envió mensaje con estado true: {mensaje}")
-
-    return JsonResponse({
-        "chequesCartera": chequesCartera,
-        "mensaje": mensaje
-    }, status=200)
+    # 🚫 CÓDIGO REAL - Descomentar cuando VFP esté listo
+    # # 1) Obtener cookies
+    # token, datos_conexion, usuario, error_mensaje = obtener_datos_cookies(request)
+    # 
+    # if error_mensaje:
+    #     return JsonResponse({"error": error_mensaje}, status=401)
+    # 
+    # # 2) Consultar VFP
+    # respuesta_vfp = comando_chequesCartera(token, usuario, request)
+    # 
+    # # 3) Sin respuesta
+    # if not respuesta_vfp:
+    #     return JsonResponse({"error": "Sin respuesta del servidor"}, status=500)
+    # 
+    # # 4) VFP devolvió estado=False
+    # if respuesta_vfp.get("Estado") == "False" or respuesta_vfp.get("estado") is False:
+    #     mensaje = respuesta_vfp.get("Mensaje") or respuesta_vfp.get("mensaje", "Error al consultar cheques")
+    #     return JsonResponse({"error": mensaje}, status=400)
+    # 
+    # # 5) TODO OK
+    # cheques = respuesta_vfp.get("CHEQUES") or respuesta_vfp.get("cheques", [])
+    # mensaje = respuesta_vfp.get("Mensaje") or respuesta_vfp.get("mensaje", "")
+    # 
+    # return JsonResponse({
+    #     "CHEQUES": cheques,
+    #     "Mensaje": mensaje
+    # })
 
 @require_http_methods(["GET"])
 def permisosInformes_view(request):

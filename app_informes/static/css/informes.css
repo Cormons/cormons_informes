@@ -118,3 +118,12 @@
         font-size: 0.75rem;
     }
 }
+
+/* Asegurar que modal de alerta siempre esté encima */
+#modalAlerta {
+    z-index: 1060 !important;
+}
+
+#modalAlerta .modal-backdrop {
+    z-index: 1055 !important;
+}

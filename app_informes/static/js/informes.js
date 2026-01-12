@@ -171,12 +171,17 @@
             .then(data => {
                 console.log('📦 Datos recibidos:', data);
                 
+                // 🚨 VERIFICAR CAMPO "Estado"
+                if (data.Estado === "False" || data.estado === false) {
+                    throw new Error(data.Mensaje || data.mensaje || 'Error al consultar cheques');
+                }
+                
                 // Ocultar loading
                 document.getElementById('chequesLoading').classList.add('d-none');
                 
                 // Mostrar mensaje informativo si existe
                 if (data.Mensaje && data.Mensaje.trim() !== '') {
-                    mostrarMensajeInfoCheques(data.Mensaje);
+                    mostrarAlerta(data.Mensaje, 'info-modal');
                 }
                 
                 // Verificar si hay cheques
@@ -206,19 +211,25 @@
                     chequeDiv.className = 'cheque-row';
                     chequeDiv.innerHTML = `
                         <div class="cheque-row-main">
-                            <i class="fas fa-chevron-right cheque-expand-icon" id="icon-${index}"></i>
-                            <div class="cheque-fecha">${cheque.fechaCobro || '-'}</div>
+                            <!-- Primera línea: Fecha + Importe -->
+                            <div class="cheque-row-header">
+                                <div class="cheque-row-left">
+                                    <i class="fas fa-chevron-right cheque-expand-icon" id="icon-${index}"></i>
+                                    <div class="cheque-fecha">${cheque.fechaCobro || '-'}</div>
+                                </div>
+                                <div class="cheque-importe">${formatearMoneda(importe)}</div>
+                            </div>
+                            <!-- Segunda línea: Emisor -->
                             <div class="cheque-emisor">${cheque.emisor || '-'}</div>
-                            <div class="cheque-importe">${formatearMoneda(importe)}</div>
                         </div>
                         <div class="cheque-details" id="details-${index}">
                             <div class="cheque-detail-item">
                                 <span class="cheque-detail-label">Banco:</span>
-                                <span>${cheque.banco || '-'}</span>
+                                <span class="cheque-detail-value">${cheque.banco || '-'}</span>
                             </div>
                             <div class="cheque-detail-item">
                                 <span class="cheque-detail-label">Nº Cheque:</span>
-                                <span>${cheque.nroCheque || '-'}</span>
+                                <span class="cheque-detail-value">${cheque.nroCheque || '-'}</span>
                             </div>
                             <div class="cheque-badges">
                                 ${badgeEcheq}${badgeCruzado}
@@ -244,7 +255,9 @@
             .catch(error => {
                 console.error('❌ Error al consultar cheques:', error);
                 document.getElementById('chequesLoading').classList.add('d-none');
-                mostrarErrorCheques(error.message || 'Error al consultar cheques');
+                
+                // 🔴 TODOS los errores redirigen al login
+                mostrarErrorBloqueante(error.message, 'https://cormons.app/');
             });
     }
 
