@@ -33,7 +33,26 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <div class="footer-totals">
+                    <div class="total-general">
+                        <span class="total-label">Total:</span>
+                        <span id="totalCantidad" class="total-value">0 cheques</span>
+                        <span class="total-separator">|</span>
+                        <span id="totalImporte" class="total-value">$0.00</span>
+                    </div>
+                    <div class="total-seleccionados">
+                        <span class="total-label">Seleccionados:</span>
+                        <span id="seleccionadosCantidad" class="total-value">0 cheques</span>
+                        <span class="total-separator">|</span>
+                        <span id="seleccionadosImporte" class="total-value">$0.00</span>
+                    </div>
+                </div>
+                <div class="footer-actions">
+                    <button type="button" class="btn btn-success" id="btnCopiarSeleccionados" disabled>
+                        <i class="fas fa-copy me-1"></i>Copiar seleccionados
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -236,6 +255,90 @@
 
 .cheque-badges .badge.bg-secondary {
     background: #95a5a6 !important;
+}
+
+/* ============================================
+   FOOTER CON TOTALES
+   ============================================ */
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-top: 2px solid #dee2e6;
+}
+
+.footer-totals {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.total-general,
+.total-seleccionados {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.total-label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.total-value {
+    font-weight: 700;
+    color: #212529;
+    font-size: 1rem;
+}
+
+.total-seleccionados .total-value {
+    color: #3498db;
+}
+
+.total-separator {
+    color: #adb5bd;
+    margin: 0 4px;
+}
+
+.footer-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* ============================================
+   CHECKBOX EN CHEQUES
+   ============================================ */
+.cheque-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+    accent-color: #3498db;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .footer-totals {
+        width: 100%;
+    }
+    
+    .footer-actions {
+        width: 100%;
+    }
+    
+    .footer-actions button {
+        flex: 1;
+    }
 }
 
 /* ============================================
