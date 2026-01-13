@@ -1,13 +1,9 @@
 """
-Servicios y lógica de negocio para la aplicación controlStock
-Incluye llamadas a APIs externas y validaciones
+Comandos VFP relacionados con el módulo de Finanzas
 """
 import logging
 from datetime import datetime
-
-from django.http import request
-from .tcp_client import enviar_consulta_tcp
-from . import APP_VERSION
+from app_informes.core.tcp_client import enviar_consulta_tcp
 
 logger = logging.getLogger(__name__)
 
@@ -55,57 +51,6 @@ def formatear_fecha(fecha_str):
     # Si no se pudo parsear, devolver el string original
     return fecha_str
 
-def comando_verificarToken(token, request):
-    """
-    Envía comando verificarToken a VFP.
-    Devuelve la respuesta literal de VFP (o None si falla la conexión).
-    """
-    mensaje = {
-        "Comando": "verificarToken",
-        "Token": token,
-        "Vista": "INFORMES",
-        "Version": APP_VERSION
-    }
-    return enviar_consulta_tcp(mensaje, request=request)
-
-def comando_permisosInformes(token, request):
-    mensaje = {
-        "Comando": "permisosInformes",
-        "Token": token,
-        "Vista": "INFORMES",
-        "Version": APP_VERSION
-    }
-    r = enviar_consulta_tcp(mensaje, request=request)
-    
-    # Sin respuesta del servidor
-    if not r:
-        return {
-            "estado": False,
-            "mensaje": "Sin respuesta del servidor"
-        }
-
-    estado_vfp = r.get("estado")
-
-    # Si viene estado = false, devolver exactamente lo que vino
-    if estado_vfp is not True and estado_vfp != "True":
-        return {
-            "estado": False,
-            "mensaje": r.get("mensaje", "Token inválido")
-        }
-
-    informes_vfp = r.get("INFORMES", [])
-    informes_normalizados = []
-
-    for item in informes_vfp:
-        descripcion = item.get("descripcion", "").lower()  # ← Convertir a minúsculas
-        if descripcion:
-            informes_normalizados.append(descripcion)
-
-    return {
-        "estado": True,
-        "mensaje": r.get("mensaje", ""),
-        "informes": informes_normalizados  
-    }
 
 def comando_chequesCartera(token, usuario, request, parametros=None):
     mensaje = {
@@ -122,15 +67,15 @@ def comando_chequesCartera(token, usuario, request, parametros=None):
         return {
             "estado": False,
             "mensaje": "Sin respuesta del servidor",
-            "CHEQUES": [],  # ✅ Cambiar a mayúsculas
+            "CHEQUES": [],
         }
     
-    # ✅ Buscar CHEQUES con mayúsculas (como envía VFP)
+    # Buscar CHEQUES con mayúsculas (como envía VFP)
     cheques = r.get("CHEQUES", [])
     
-    # ✅ Devolver con mayúsculas (para mantener consistencia)
+    # Devolver con mayúsculas (para mantener consistencia)
     return {
         "estado": r.get("estado", False),
         "mensaje": r.get("mensaje", ""),
-        "CHEQUES": cheques,  # ✅ Cambiar a mayúsculas
+        "CHEQUES": cheques,
     }

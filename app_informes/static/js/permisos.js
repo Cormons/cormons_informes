@@ -17,7 +17,7 @@
         if (loadingElement) loadingElement.classList.remove('d-none');
         if (containerElement) containerElement.classList.add('d-none');
         
-        fetch('/permisos-informes/')
+        fetch('/auth/permisos-informes/')
             .then(r => {
                 if (!r.ok) {
                     return r.json().then(errData => {

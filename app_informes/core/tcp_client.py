@@ -5,8 +5,8 @@ Maneja todas las comunicaciones de bajo nivel con el servidor VFP
 import logging
 import socket
 import json
-from .__init__ import APP_VERSION, TCP_TIMEOUT, TCP_ENABLED
-from .utils import get_connection_config
+from .. import APP_VERSION, TCP_TIMEOUT, TCP_ENABLED
+from ..utils import get_connection_config
 from .algoritmoEncriptacionCasero import encriptar, desencriptar
 
 logger = logging.getLogger(__name__)

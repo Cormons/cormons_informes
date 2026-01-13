@@ -10,7 +10,7 @@
      * Consultar cheques en cartera
      */
     function consultarChequesCartera() {
-        return fetch('/cheques-cartera/')
+        return fetch('/finanzas/cheques-cartera/')
             .then(response => {
                 if (!response.ok) {
                     return response.json().then(err => {
