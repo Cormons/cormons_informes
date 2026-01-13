@@ -73,7 +73,7 @@ def comando_permisosInformes(token, request):
         "Comando": "permisosInformes",
         "Token": token,
         "Vista": "INFORMES",
-        "Versión": "1"
+        "Version": APP_VERSION
     }
     r = enviar_consulta_tcp(mensaje, request=request)
     
@@ -84,17 +84,27 @@ def comando_permisosInformes(token, request):
             "mensaje": "Sin respuesta del servidor"
         }
 
+    estado_vfp = r.get("estado")
+
     # Si viene estado = false, devolver exactamente lo que vino
-    if r.get("estado") is not True:
+    if estado_vfp is not True and estado_vfp != "True":
         return {
             "estado": False,
             "mensaje": r.get("mensaje", "Token inválido")
         }
 
+    informes_vfp = r.get("INFORMES", [])
+    informes_normalizados = []
+
+    for item in informes_vfp:
+        descripcion = item.get("descripcion", "").lower()  # ← Convertir a minúsculas
+        if descripcion:
+            informes_normalizados.append(descripcion)
+
     return {
-        "estado": r.get("Estado") == "True",
-        "mensaje": r.get("Mensaje", ""),
-        "informes": r.get("Informes", [])
+        "estado": True,
+        "mensaje": r.get("mensaje", ""),
+        "informes": informes_normalizados  
     }
 
 def comando_chequesCartera(token, usuario, request, parametros=None):
