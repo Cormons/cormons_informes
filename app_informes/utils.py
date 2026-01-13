@@ -64,15 +64,6 @@ def get_connection_config(request):
     return ip, puerto
 
 def obtener_datos_cookies(request):
-    """
-    Obtiene token, datos de conexión y usuario desde cookies.
-    Verifica en orden: datos de conexión -> token -> usuario
-    
-    Returns:
-        tuple: (token, datos_conexion, usuario, error_mensaje)
-        - Si todo está bien: error_mensaje es None
-        - Si falta algo: error_mensaje contiene el mensaje específico del error
-    """
     from urllib.parse import unquote
 
     token = request.COOKIES.get('authToken')

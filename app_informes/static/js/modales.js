@@ -1,0 +1,255 @@
+// ============================================
+// MÓDULO: GESTIÓN DE MODALES
+// ============================================
+(function() {
+    'use strict';
+    
+    let modalChequesCartera = null;
+    let modalErrorBloqueante = null;
+
+    // ============================================
+    // INICIALIZACIÓN
+    // ============================================
+    
+    /**
+     * Inicializar modales de Bootstrap
+     */
+    function inicializarModales() {
+        const modalChequesElement = document.getElementById('modalChequesCartera');
+        if (modalChequesElement && window.bootstrap) {
+            modalChequesCartera = new bootstrap.Modal(modalChequesElement);
+            console.log('✅ Modal de cheques inicializado');
+        }
+        
+        const modalErrorElement = document.getElementById('modalErrorBloqueante');
+        if (modalErrorElement && window.bootstrap) {
+            modalErrorBloqueante = new bootstrap.Modal(modalErrorElement, {
+                backdrop: 'static',
+                keyboard: false
+            });
+            console.log('✅ Modal de error bloqueante inicializado');
+        }
+    }
+
+    // ============================================
+    // MODALES DE ERROR
+    // ============================================
+    
+    /**
+     * Mostrar error bloqueante (sesión expirada, errores críticos)
+     */
+    function mostrarErrorBloqueante(mensaje, redirectUrl) {
+        console.log('🚫 Mostrando error bloqueante:', mensaje);
+        // Ocultar otros modales abiertos (evitar que queden modales superpuestos)
+        try {
+            const modalChequesEl = document.getElementById('modalChequesCartera');
+            if (modalChequesEl) {
+                const inst = bootstrap.Modal.getInstance(modalChequesEl);
+                if (inst) inst.hide();
+            }
+
+            const modalAlertaEl = document.getElementById('modalAlerta');
+            if (modalAlertaEl) {
+                const inst2 = bootstrap.Modal.getInstance(modalAlertaEl);
+                if (inst2) inst2.hide();
+            }
+        } catch (e) {
+            // Ignorar si bootstrap no está disponible aún
+            console.warn('No se pudieron ocultar otros modales:', e);
+        }
+
+        const mensajeEl = document.getElementById('errorBloqueanteTexto');
+        const btnRedirect = document.getElementById('btn-redirect-bloqueante');
+        
+        if (mensajeEl) {
+            mensajeEl.textContent = mensaje;
+        }
+        
+        if (btnRedirect) {
+            btnRedirect.onclick = function() {
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                } else {
+                    // Si no hay URL, solo cerrar el modal
+                    if (modalErrorBloqueante) {
+                        modalErrorBloqueante.hide();
+                    }
+                }
+            };
+        }
+        
+        if (modalErrorBloqueante) {
+            modalErrorBloqueante.show();
+        } else {
+            alert(mensaje);
+            if (redirectUrl) {
+                window.location.href = redirectUrl;
+            }
+        }
+    }
+
+    // ============================================
+    // MENSAJES INFORMATIVOS
+    // ============================================
+    
+    /**
+     * Mostrar mensaje informativo general (no bloqueante)
+     * Se muestra en la parte superior de la página
+     */
+    function mostrarMensajeInfoGeneral(mensaje) {
+        if (!mensaje || mensaje.trim() === '') return;
+        
+        console.log('📢 Mensaje general de VFP:', mensaje);
+        
+        const infoDiv = document.getElementById('mensajeInfoGeneral');
+        const infoTexto = document.getElementById('mensajeInfoGeneralTexto');
+        
+        if (infoDiv && infoTexto) {
+            infoTexto.textContent = mensaje;
+            infoDiv.classList.remove('d-none');
+        }
+    }
+    
+    /**
+     * Mostrar mensaje informativo en modal de cheques
+     */
+    function mostrarMensajeInfoCheques(mensaje) {
+        if (!mensaje || mensaje.trim() === '') return;
+        
+        console.log('📢 Mensaje de VFP (cheques):', mensaje);
+        
+        const infoDiv = document.getElementById('chequesMensajeInfo');
+        const infoTexto = document.getElementById('chequesMensajeInfoTexto');
+        
+        if (infoDiv && infoTexto) {
+            infoTexto.textContent = mensaje;
+            infoDiv.classList.remove('d-none');
+        }
+    }
+    
+    /**
+     * Mostrar error en modal de cheques
+     */
+    function mostrarErrorCheques(mensaje) {
+        console.error('❌ Error en cheques:', mensaje);
+        
+        const errorDiv = document.getElementById('chequesError');
+        const errorMensaje = document.getElementById('chequesErrorMensaje');
+        
+        if (errorDiv && errorMensaje) {
+            errorMensaje.textContent = mensaje;
+            errorDiv.classList.remove('d-none');
+        }
+    }
+        /**
+     * Mostrar modal de alerta genérico
+     * @param {string} mensaje - Texto a mostrar
+     * @param {string} tipo - 'info-modal' (azul) o 'error-modal' (rojo)
+     */
+    function mostrarAlerta(mensaje, tipo = 'info-modal') {
+        const configs = {
+            'info-modal': { 
+                headerClass: 'bg-info text-white', 
+                titulo: 'Información', 
+                icono: 'fa-info-circle text-info',
+                btnClass: 'btn-primary'
+            },
+            'error-modal': { 
+                headerClass: 'bg-danger text-white', 
+                titulo: 'Error', 
+                icono: 'fa-exclamation-circle text-danger',
+                btnClass: 'btn-danger'
+            }
+        };
+
+        const config = configs[tipo];
+        
+        const header = document.getElementById('modal-alerta-header');
+        const titulo = document.getElementById('modal-alerta-titulo');
+        const icono = document.getElementById('modal-alerta-icono');
+        const mensajeEl = document.getElementById('modal-alerta-mensaje');
+        
+        if (header) header.className = `modal-header ${config.headerClass}`;
+        if (titulo) titulo.innerHTML = `<i class="fas ${config.icono.split(' ')[0]} me-2"></i>${config.titulo}`;
+        if (icono) icono.className = `fas ${config.icono}`;
+        if (mensajeEl) mensajeEl.textContent = mensaje;
+        
+        const modalAlerta = new bootstrap.Modal(document.getElementById('modalAlerta'));
+        modalAlerta.show();
+    }
+
+    // ============================================
+    // MODAL DE CHEQUES
+    // ============================================
+    
+    /**
+     * Abrir modal de cheques en cartera
+     */
+    function abrirModalChequesCartera() {
+        console.log('🔵 Consultando cheques en cartera...');
+        
+        if (!modalChequesCartera) {
+            console.error('❌ Modal de cheques no inicializado');
+            alert('Error al abrir modal de cheques');
+            return;
+        }
+        
+        // Resetear estado del modal (pero NO mostrarlo aún)
+        document.getElementById('chequesLoading').classList.remove('d-none');
+        document.getElementById('chequesError').classList.add('d-none');
+        document.getElementById('chequesMensajeInfo').classList.add('d-none');
+        document.getElementById('chequesResultados').classList.add('d-none');
+        
+        // Llamar a la función de consulta
+        if (window.consultarChequesCartera) {
+            window.consultarChequesCartera()
+                .then(data => {
+                    // ✅ VERIFICAR SI HAY CHEQUES ANTES DE ABRIR
+                    if (data && data.CHEQUES && data.CHEQUES.length > 0) {
+                        // ✅ HAY cheques → Abrir modal
+                        modalChequesCartera.show();
+                        console.log(`✅ Modal abierto con ${data.CHEQUES.length} cheques`);
+                    } else {
+                        // ✅ NO hay cheques → Solo mostrar alerta informativa
+                        const mensaje = data?.Mensaje || 'No se encontraron cheques en cartera';
+                        mostrarAlerta(mensaje, 'info-modal');
+                        console.log('ℹ️ No hay cheques, mostrando alerta informativa');
+                    }
+                })
+                .catch(err => {
+                    // Error en la consulta → Mostrar modal bloqueante
+                    console.error('❌ Error al consultar cheques:', err);
+                    
+                    // Asegurar que el modal de cheques NO esté abierto
+                    try {
+                        const inst = bootstrap.Modal.getInstance(document.getElementById('modalChequesCartera'));
+                        if (inst) inst.hide();
+                    } catch (e) { /* ignore */ }
+                    
+                    mostrarErrorBloqueante(err.message, 'https://cormons.app/');
+                });
+        } else {
+            console.error('❌ Función consultarChequesCartera no encontrada');
+            mostrarErrorCheques('Error: función de consulta no disponible');
+        }
+    }
+
+    // ============================================
+    // INICIALIZAR AL CARGAR DOM
+    // ============================================
+    
+    document.addEventListener('DOMContentLoaded', inicializarModales);
+
+    // ============================================
+    // EXPONER FUNCIONES GLOBALES
+    // ============================================
+    
+    window.mostrarErrorBloqueante = mostrarErrorBloqueante;
+    window.mostrarMensajeInfoGeneral = mostrarMensajeInfoGeneral;
+    window.mostrarMensajeInfoCheques = mostrarMensajeInfoCheques;
+    window.mostrarErrorCheques = mostrarErrorCheques;
+    window.abrirModalChequesCartera = abrirModalChequesCartera;
+    window.mostrarAlerta = mostrarAlerta;
+
+    console.log('✅ modales.js cargado');
+})();

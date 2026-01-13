@@ -4,8 +4,10 @@ Incluye llamadas a APIs externas y validaciones
 """
 import logging
 from datetime import datetime
+
+from django.http import request
 from .tcp_client import enviar_consulta_tcp
-from .__init__ import APP_VERSION
+from . import APP_VERSION
 
 logger = logging.getLogger(__name__)
 
@@ -54,16 +56,27 @@ def formatear_fecha(fecha_str):
     return fecha_str
 
 def comando_verificarToken(token, request):
-
+    """
+    Envía comando verificarToken a VFP.
+    Devuelve la respuesta literal de VFP (o None si falla la conexión).
+    """
     mensaje = {
         "Comando": "verificarToken",
+        "Token": token,
+        "Vista": "CONTROLSTOCK",
+        "Version": APP_VERSION
+    }
+    return enviar_consulta_tcp(mensaje, request=request)
+
+def comando_permisosInformes(token, request):
+    mensaje = {
+        "Comando": "permisosInformes",
         "Token": token,
         "Vista": "INFORMES",
         "Version": APP_VERSION
     }
-
     r = enviar_consulta_tcp(mensaje, request=request)
-
+    
     # Sin respuesta del servidor
     if not r:
         return {
@@ -71,20 +84,27 @@ def comando_verificarToken(token, request):
             "mensaje": "Sin respuesta del servidor"
         }
 
+    estado_vfp = r.get("estado")
+
     # Si viene estado = false, devolver exactamente lo que vino
-    if r.get("estado") is not True:
+    if estado_vfp is not True and estado_vfp != "True":
         return {
             "estado": False,
             "mensaje": r.get("mensaje", "Token inválido")
         }
 
-    # Token válido → devolver datos completos
+    informes_vfp = r.get("INFORMES", [])
+    informes_normalizados = []
+
+    for item in informes_vfp:
+        descripcion = item.get("descripcion", "").lower()  # ← Convertir a minúsculas
+        if descripcion:
+            informes_normalizados.append(descripcion)
+
     return {
         "estado": True,
-        "usuario": r.get("usuario", ""),
-        "nombre":  r.get("nombre", ""),
         "mensaje": r.get("mensaje", ""),
-        "token":   r.get("token", "")
+        "informes": informes_normalizados  
     }
 
 def comando_chequesCartera(token, usuario, request, parametros=None):
