@@ -63,7 +63,7 @@ def comando_verificarToken(token, request):
     mensaje = {
         "Comando": "verificarToken",
         "Token": token,
-        "Vista": "CONTROLSTOCK",
+        "Vista": "INFORMES",
         "Version": APP_VERSION
     }
     return enviar_consulta_tcp(mensaje, request=request)
@@ -122,15 +122,15 @@ def comando_chequesCartera(token, usuario, request, parametros=None):
         return {
             "estado": False,
             "mensaje": "Sin respuesta del servidor",
-            "cheques": [],
+            "CHEQUES": [],  # ✅ Cambiar a mayúsculas
         }
     
-    # Devolver exactamente lo que viene de VFP
-    # Manejar ambas posibles claves de respuesta
-    cheques = r.get("cheques", [])
+    # ✅ Buscar CHEQUES con mayúsculas (como envía VFP)
+    cheques = r.get("CHEQUES", [])
     
+    # ✅ Devolver con mayúsculas (para mantener consistencia)
     return {
         "estado": r.get("estado", False),
         "mensaje": r.get("mensaje", ""),
-        "cheques": cheques,
+        "CHEQUES": cheques,  # ✅ Cambiar a mayúsculas
     }
