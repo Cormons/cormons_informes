@@ -10,7 +10,14 @@
      * Cargar permisos de módulos desde VFP
      */
     function cargarPermisosModulos() {
-        fetch('/permisos-informes/')
+        // ✅ Asegurar que el loading esté visible
+        const loadingElement = document.getElementById('modulosLoading');
+        const containerElement = document.getElementById('modulosContainer');
+        
+        if (loadingElement) loadingElement.classList.remove('d-none');
+        if (containerElement) containerElement.classList.add('d-none');
+        
+        fetch('/auth/permisos-informes/')
             .then(r => {
                 if (!r.ok) {
                     return r.json().then(errData => {

@@ -202,7 +202,10 @@
             return;
         }
         
-        // Resetear estado del modal (pero NO mostrarlo aún)
+        // ✅ ABRIR EL MODAL INMEDIATAMENTE
+        modalChequesCartera.show();
+        
+        // Resetear estado del modal y mostrar loading
         document.getElementById('chequesLoading').classList.remove('d-none');
         document.getElementById('chequesError').classList.add('d-none');
         document.getElementById('chequesMensajeInfo').classList.add('d-none');
@@ -212,29 +215,35 @@
         if (window.consultarChequesCartera) {
             window.consultarChequesCartera()
                 .then(data => {
-                    // ✅ VERIFICAR SI HAY CHEQUES ANTES DE ABRIR
+                    // ✅ VERIFICAR SI HAY CHEQUES
                     if (data && data.CHEQUES && data.CHEQUES.length > 0) {
-                        // ✅ HAY cheques → Abrir modal
-                        modalChequesCartera.show();
-                        console.log(`✅ Modal abierto con ${data.CHEQUES.length} cheques`);
+                        // ✅ HAY cheques → El modal ya está abierto, solo actualizar contenido
+                        console.log(`✅ Cargados ${data.CHEQUES.length} cheques`);
                     } else {
-                        // ✅ NO hay cheques → Solo mostrar alerta informativa
+                        // ✅ NO hay cheques → Cerrar modal y mostrar alerta
+                        modalChequesCartera.hide();
+                        
                         const mensaje = data?.Mensaje || 'No se encontraron cheques en cartera';
-                        mostrarAlerta(mensaje, 'info-modal');
+                        
+                        // ✅ Esperar a que el modal se cierre antes de mostrar alerta
+                        setTimeout(() => {
+                            mostrarAlerta(mensaje, 'info-modal');
+                        }, 300);
+                        
                         console.log('ℹ️ No hay cheques, mostrando alerta informativa');
                     }
                 })
                 .catch(err => {
-                    // Error en la consulta → Mostrar modal bloqueante
+                    // Error en la consulta → Cerrar modal y mostrar error bloqueante
                     console.error('❌ Error al consultar cheques:', err);
                     
-                    // Asegurar que el modal de cheques NO esté abierto
-                    try {
-                        const inst = bootstrap.Modal.getInstance(document.getElementById('modalChequesCartera'));
-                        if (inst) inst.hide();
-                    } catch (e) { /* ignore */ }
+                    // Cerrar modal de cheques
+                    modalChequesCartera.hide();
                     
-                    mostrarErrorBloqueante(err.message, 'https://cormons.app/');
+                    // Mostrar error bloqueante después de cerrar
+                    setTimeout(() => {
+                        mostrarErrorBloqueante(err.message, 'https://cormons.app/');
+                    }, 300);
                 });
         } else {
             console.error('❌ Función consultarChequesCartera no encontrada');

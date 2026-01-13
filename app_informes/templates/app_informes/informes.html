@@ -184,15 +184,17 @@
     {% include 'app_informes/modals/modal_error_bloqueante.html' %}
 
     <!-- JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <!-- Dependencias primero -->
-    <script src="{% static 'js/modales.js' %}"></script>
-    <script src="{% static 'js/modalLogout.js' %}"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Dependencias primero - desde core/ -->
+    <script src="{% static 'js/core/modales.js' %}"></script>
+    <script src="{% static 'js/core/modalLogout.js' %}"></script>
+    <script src="{% static 'js/core/utilidades.js' %}"></script>
 
-    <!-- Nuevos módulos -->
-    <script src="{% static 'js/utilidades.js' %}"></script>
+    <!-- Módulos de negocio -->
+    <script src="{% static 'js/modules/finanzas/cheques.js' %}"></script>
+
+    <!-- Gestión de permisos y tabs -->
     <script src="{% static 'js/permisos.js' %}"></script>
-    <script src="{% static 'js/cheques.js' %}"></script>
     <script src="{% static 'js/tabs.js' %}"></script>
 
     <!-- Inicialización general al final -->
