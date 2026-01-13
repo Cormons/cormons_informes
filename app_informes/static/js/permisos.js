@@ -36,13 +36,13 @@
                     }
                 });
                 
-                // 🆕 ACTIVAR EL PRIMER MÓDULO PERMITIDO MANUALMENTE
-                if (modulosPermitidos.length > 0) {
-                    setTimeout(() => {
-                        const primerModulo = modulosPermitidos[0];
-                        activarTabManualmente(primerModulo);
-                    }, 150);
-                }
+                // ❌ COMENTAR PARA QUE NO SE ACTIVE NINGÚN TAB AL INICIO
+                // if (modulosPermitidos.length > 0) {
+                //     setTimeout(() => {
+                //         const primerModulo = modulosPermitidos[0];
+                //         activarTabManualmente(primerModulo);
+                //     }, 150);
+                // }
             })
             .catch(err => {
                 console.error('Error al cargar permisos:', err);

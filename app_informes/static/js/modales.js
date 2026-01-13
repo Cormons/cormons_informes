@@ -161,7 +161,6 @@
                 btnClass: 'btn-danger'
             }
         };
-
         const config = configs[tipo];
         
         const header = document.getElementById('modal-alerta-header');
@@ -174,8 +173,17 @@
         if (icono) icono.className = `fas ${config.icono}`;
         if (mensajeEl) mensajeEl.textContent = mensaje;
         
-        const modalAlerta = new bootstrap.Modal(document.getElementById('modalAlerta'));
-        modalAlerta.show();
+        // ✅ Esperar un tick antes de mostrar el modal
+        setTimeout(() => {
+            const modalAlerta = new bootstrap.Modal(document.getElementById('modalAlerta'), {
+                backdrop: 'static',
+                keyboard: true,
+                focus: true
+            });
+            modalAlerta.show();
+        }, 50);
+        
+        console.log(`ℹ️ Alerta mostrada: ${mensaje.substring(0, 50)}...`);
     }
 
     // ============================================
