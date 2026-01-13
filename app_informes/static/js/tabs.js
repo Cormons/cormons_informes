@@ -11,13 +11,38 @@
      */
     function inicializarTabs() {
         const tabButtons = document.querySelectorAll('.module-tab');
+        
         tabButtons.forEach(button => {
-            button.addEventListener('shown.bs.tab', function (event) {
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                event.target.classList.add('active');
+            // ✅ Manejar click manualmente (evitar Bootstrap API por estructura no estándar)
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                
+                const modulo = this.dataset.module;
+                
+                // Desactivar todos
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+                
+                document.querySelectorAll('.tab-pane').forEach(pane => {
+                    pane.classList.remove('show', 'active');
+                });
+                
+                // Activar el clickeado
+                this.classList.add('active');
+                this.setAttribute('aria-selected', 'true');
+                
+                const targetPane = document.querySelector(this.dataset.bsTarget);
+                if (targetPane) {
+                    targetPane.classList.add('show', 'active');
+                }
+                
+                console.log(`✅ Tab activado: ${modulo}`);
             });
         });
-        console.log('✅ Tabs inicializados');
+        
+        console.log('✅ Tabs inicializados con manejo manual');
     }
 
     // Exponer funciones globalmente

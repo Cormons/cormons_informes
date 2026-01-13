@@ -22,120 +22,111 @@
             .then(data => {
                 console.log('📦 Datos recibidos:', data);
                 
-                // 🚨 VERIFICAR CAMPO "Estado"
-                if (data.Estado === "False" || data.estado === false) {
-                    throw new Error(data.Mensaje || data.mensaje || 'Error al consultar cheques');
-                }
-                
                 // Ocultar loading
                 document.getElementById('chequesLoading').classList.add('d-none');
                 
-                // Mostrar mensaje informativo si existe
-                if (data.Mensaje && data.Mensaje.trim() !== '') {
-                    mostrarAlerta(data.Mensaje, 'info-modal');
-                }
-                
-                // Verificar si hay cheques
-                if (!data.CHEQUES || data.CHEQUES.length === 0) {
-                    mostrarErrorCheques('No se encontraron cheques en cartera');
-                    return;
-                }
-                
-                // Calcular totales generales
-                const totalCheques = data.CHEQUES.length;
-                const totalImporte = data.CHEQUES.reduce((sum, cheque) => sum + (parseFloat(cheque.importe) || 0), 0);
-                
-                // Actualizar totales generales
-                document.getElementById('totalCantidad').textContent = `${totalCheques} ${totalCheques === 1 ? 'cheque' : 'cheques'}`;
-                document.getElementById('totalImporte').textContent = formatearMoneda(totalImporte);
-                
-                // Resetear totales seleccionados
-                document.getElementById('seleccionadosCantidad').textContent = '0 cheques';
-                document.getElementById('seleccionadosImporte').textContent = '$0.00';
-                
-                // Renderizar lista expandible
-                const lista = document.getElementById('chequesListaExpandible');
-                lista.innerHTML = '';
-                
-                data.CHEQUES.forEach((cheque, index) => {
-                    const importe = parseFloat(cheque.importe) || 0;
+                // ✅ Solo procesar y renderizar si HAY cheques
+                if (data.CHEQUES && data.CHEQUES.length > 0) {
+                    // Calcular totales generales
+                    const totalCheques = data.CHEQUES.length;
+                    const totalImporte = data.CHEQUES.reduce((sum, cheque) => 
+                        sum + (parseFloat(cheque.importe) || 0), 0
+                    );
                     
-                    // Badge para eCheq
-                    const badgeEcheq = cheque.eCheq === 'SI' 
-                        ? '<span class="badge bg-info ms-1">eCheq</span>' 
-                        : '';
+                    // Actualizar totales generales
+                    document.getElementById('totalCantidad').textContent = 
+                        `${totalCheques} ${totalCheques === 1 ? 'cheque' : 'cheques'}`;
+                    document.getElementById('totalImporte').textContent = 
+                        formatearMoneda(totalImporte);
                     
-                    // Badge para cruzado
-                    const badgeCruzado = cheque.cruzado === 'SI' 
-                        ? '<span class="badge bg-info ms-1">Cruzado</span>' 
-                        : '';
+                    // Resetear totales seleccionados
+                    document.getElementById('seleccionadosCantidad').textContent = '0 cheques';
+                    document.getElementById('seleccionadosImporte').textContent = '$0.00';
                     
-                    const chequeDiv = document.createElement('div');
-                    chequeDiv.className = 'cheque-row';
-                    chequeDiv.dataset.index = index;
-                    chequeDiv.dataset.importe = importe;
-                    chequeDiv.innerHTML = `
-                        <div class="cheque-row-main">
-                            <!-- Primera línea: Checkbox + Fecha + Importe -->
-                            <div class="cheque-row-header">
-                                <div class="cheque-row-left">
-                                    <input type="checkbox" class="cheque-checkbox" data-index="${index}">
-                                    <i class="fas fa-chevron-right cheque-expand-icon" id="icon-${index}"></i>
-                                    <div class="cheque-fecha">${cheque.fechaCobro || '-'}</div>
-                                </div>
-                                <div class="cheque-importe">${formatearMoneda(importe)}</div>
-                            </div>
-                            <!-- Segunda línea: Emisor -->
-                            <div class="cheque-emisor">${cheque.emisor || '-'}</div>
-                        </div>
-                        <div class="cheque-details" id="details-${index}">
-                            <div class="cheque-detail-item">
-                                <span class="cheque-detail-label">Banco</span>
-                                <span class="cheque-detail-value">${cheque.banco || '-'}</span>
-                            </div>
-                            <div class="cheque-detail-item">
-                                <span class="cheque-detail-label">Nº Cheque</span>
-                                <span class="cheque-detail-value">${cheque.nroCheque || '-'}</span>
-                            </div>
-                            <div class="cheque-badges">
-                                ${badgeEcheq}${badgeCruzado}
-                            </div>
-                        </div>
-                    `;
+                    // Renderizar lista expandible
+                    const lista = document.getElementById('chequesListaExpandible');
+                    lista.innerHTML = '';
                     
-                    // Event listener para checkbox
-                    const checkbox = chequeDiv.querySelector('.cheque-checkbox');
-                    checkbox.addEventListener('change', actualizarTotalesSeleccionados);
-                    
-                    // Event listener para expandir/colapsar (solo en el icono, NO en el checkbox)
-                    chequeDiv.querySelector('.cheque-expand-icon').addEventListener('click', () => {
-                        const details = document.getElementById(`details-${index}`);
-                        const icon = document.getElementById(`icon-${index}`);
+                    data.CHEQUES.forEach((cheque, index) => {
+                        const importe = parseFloat(cheque.importe) || 0;
                         
-                        details.classList.toggle('expanded');
-                        icon.classList.toggle('expanded');
+                        // Badge para eCheq
+                        const badgeEcheq = cheque.eCheq === 'SI' 
+                            ? '<span class="badge bg-info ms-1">eCheq</span>' 
+                            : '';
+                        
+                        // Badge para cruzado
+                        const badgeCruzado = cheque.cruzado === 'SI' 
+                            ? '<span class="badge bg-secondary ms-1">Cruzado</span>' 
+                            : '';
+                        
+                        const chequeDiv = document.createElement('div');
+                        chequeDiv.className = 'cheque-row';
+                        chequeDiv.dataset.index = index;
+                        chequeDiv.dataset.importe = importe;
+                        chequeDiv.innerHTML = `
+                            <div class="cheque-row-main">
+                                <!-- Primera línea: Checkbox + Fecha + Importe -->
+                                <div class="cheque-row-header">
+                                    <div class="cheque-row-left">
+                                        <input type="checkbox" class="cheque-checkbox" data-index="${index}">
+                                        <i class="fas fa-chevron-right cheque-expand-icon" id="icon-${index}"></i>
+                                        <div class="cheque-fecha">${cheque.fechaCobro || '-'}</div>
+                                    </div>
+                                    <div class="cheque-importe">${formatearMoneda(importe)}</div>
+                                </div>
+                                <!-- Segunda línea: Emisor -->
+                                <div class="cheque-emisor">${cheque.emisor || '-'}</div>
+                            </div>
+                            <div class="cheque-details" id="details-${index}">
+                                <div class="cheque-detail-item">
+                                    <span class="cheque-detail-label">Banco</span>
+                                    <span class="cheque-detail-value">${cheque.banco || '-'}</span>
+                                </div>
+                                <div class="cheque-detail-item">
+                                    <span class="cheque-detail-label">Nº Cheque</span>
+                                    <span class="cheque-detail-value">${cheque.nroCheque || '-'}</span>
+                                </div>
+                                <div class="cheque-badges">
+                                    ${badgeEcheq}${badgeCruzado}
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Event listener para checkbox
+                        const checkbox = chequeDiv.querySelector('.cheque-checkbox');
+                        checkbox.addEventListener('change', actualizarTotalesSeleccionados);
+                        
+                        // Event listener para expandir/colapsar
+                        chequeDiv.querySelector('.cheque-expand-icon').addEventListener('click', () => {
+                            const details = document.getElementById(`details-${index}`);
+                            const icon = document.getElementById(`icon-${index}`);
+                            
+                            details.classList.toggle('expanded');
+                            icon.classList.toggle('expanded');
+                        });
+                        
+                        lista.appendChild(chequeDiv);
                     });
                     
-                    lista.appendChild(chequeDiv);
-                });
-                
-                // Guardar datos de cheques globalmente para copiar
-                window.chequesData = data.CHEQUES;
-                
-                // Event listener para botón copiar
-                document.getElementById('btnCopiarSeleccionados').onclick = copiarChequesSeleccionados;
-                
-                // Mostrar resultados
-                document.getElementById('chequesResultados').classList.remove('d-none');
+                    // Guardar datos de cheques globalmente para copiar
+                    window.chequesData = data.CHEQUES;
+                    
+                    // Event listener para botón copiar
+                    document.getElementById('btnCopiarSeleccionados').onclick = copiarChequesSeleccionados;
+                    
+                    // Mostrar resultados
+                    document.getElementById('chequesResultados').classList.remove('d-none');
+                }
 
-                // Devolver data para quien invoque
+                // ✅ SIEMPRE devolver data (modales.js decide qué hacer)
                 return data;
             })
             .catch(error => {
                 console.error('❌ Error al consultar cheques:', error);
                 document.getElementById('chequesLoading').classList.add('d-none');
 
-                // Propagar el error al invocador para que decida qué modal mostrar
+                // Propagar el error para que modales.js lo maneje
                 throw error;
             });
     }

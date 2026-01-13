@@ -186,32 +186,46 @@
      * Abrir modal de cheques en cartera
      */
     function abrirModalChequesCartera() {
-        console.log('🔵 Abriendo modal de cheques...');
+        console.log('🔵 Consultando cheques en cartera...');
+        
         if (!modalChequesCartera) {
             console.error('❌ Modal de cheques no inicializado');
             alert('Error al abrir modal de cheques');
             return;
         }
-
-        // Resetear estado del modal (preparar UI pero NO mostrarlo aún)
+        
+        // Resetear estado del modal (pero NO mostrarlo aún)
         document.getElementById('chequesLoading').classList.remove('d-none');
         document.getElementById('chequesError').classList.add('d-none');
         document.getElementById('chequesMensajeInfo').classList.add('d-none');
         document.getElementById('chequesResultados').classList.add('d-none');
-
-        // Llamar a la función de consulta; mostrar modal solo si la consulta es exitosa
+        
+        // Llamar a la función de consulta
         if (window.consultarChequesCartera) {
             window.consultarChequesCartera()
-                .then(() => {
-                    modalChequesCartera.show();
+                .then(data => {
+                    // ✅ VERIFICAR SI HAY CHEQUES ANTES DE ABRIR
+                    if (data && data.CHEQUES && data.CHEQUES.length > 0) {
+                        // ✅ HAY cheques → Abrir modal
+                        modalChequesCartera.show();
+                        console.log(`✅ Modal abierto con ${data.CHEQUES.length} cheques`);
+                    } else {
+                        // ✅ NO hay cheques → Solo mostrar alerta informativa
+                        const mensaje = data?.Mensaje || 'No se encontraron cheques en cartera';
+                        mostrarAlerta(mensaje, 'info-modal');
+                        console.log('ℹ️ No hay cheques, mostrando alerta informativa');
+                    }
                 })
                 .catch(err => {
-                    // Evitar que quede abierto el modal de cheques y mostrar solo el bloqueante
+                    // Error en la consulta → Mostrar modal bloqueante
+                    console.error('❌ Error al consultar cheques:', err);
+                    
+                    // Asegurar que el modal de cheques NO esté abierto
                     try {
                         const inst = bootstrap.Modal.getInstance(document.getElementById('modalChequesCartera'));
                         if (inst) inst.hide();
                     } catch (e) { /* ignore */ }
-
+                    
                     mostrarErrorBloqueante(err.message, 'https://cormons.app/');
                 });
         } else {

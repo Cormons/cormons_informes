@@ -20,10 +20,6 @@
                 return r.json();
             })
             .then(data => {
-                // 🚨 VERIFICAR CAMPO "estado"
-                if (data.estado === false || data.estado === "False") {
-                    throw new Error(data.mensaje || 'Error al cargar permisos de módulos');
-                }
                 const modulosPermitidos = data.informes;
                 
                 // Mostrar mensaje si existe
@@ -40,18 +36,12 @@
                     }
                 });
                 
-                // 🆕 ACTIVAR EL PRIMER MÓDULO PERMITIDO
+                // 🆕 ACTIVAR EL PRIMER MÓDULO PERMITIDO MANUALMENTE
                 if (modulosPermitidos.length > 0) {
-                    const primerModulo = modulosPermitidos[0];
-                    const primerBtn = document.querySelector(`.module-tab[data-module="${primerModulo}"]`);
-                    const primerTab = document.querySelector(`#${primerModulo}`);
-                    
-                    if (primerBtn && primerTab) {
-                        // Activar botón
-                        primerBtn.classList.add('active');
-                        // Activar contenido del tab
-                        primerTab.classList.add('show', 'active');
-                    }
+                    setTimeout(() => {
+                        const primerModulo = modulosPermitidos[0];
+                        activarTabManualmente(primerModulo);
+                    }, 150);
                 }
             })
             .catch(err => {
@@ -60,8 +50,38 @@
             });
     }
 
+    /**
+     * Activar tab manualmente sin usar Bootstrap API
+     */
+    function activarTabManualmente(nombreModulo) {
+        // Desactivar todos los tabs
+        document.querySelectorAll('.module-tab').forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+        });
+        
+        // Ocultar todos los contenidos
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('show', 'active');
+        });
+        
+        // Activar el tab seleccionado
+        const tabBtn = document.querySelector(`.module-tab[data-module="${nombreModulo}"]`);
+        const tabPane = document.querySelector(`#${nombreModulo}`);
+        
+        if (tabBtn && tabPane) {
+            tabBtn.classList.add('active');
+            tabBtn.setAttribute('aria-selected', 'true');
+            
+            tabPane.classList.add('show', 'active');
+            
+            console.log(`✅ Tab "${nombreModulo}" activado manualmente`);
+        }
+    }
+
     // Exponer funciones globalmente
     window.cargarPermisosModulos = cargarPermisosModulos;
+    window.activarTabManualmente = activarTabManualmente;
     
     console.log('✅ permisos.js cargado');
 })();
