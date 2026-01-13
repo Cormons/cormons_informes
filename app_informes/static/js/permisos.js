@@ -10,6 +10,13 @@
      * Cargar permisos de módulos desde VFP
      */
     function cargarPermisosModulos() {
+        // ✅ Asegurar que el loading esté visible
+        const loadingElement = document.getElementById('modulosLoading');
+        const containerElement = document.getElementById('modulosContainer');
+        
+        if (loadingElement) loadingElement.classList.remove('d-none');
+        if (containerElement) containerElement.classList.add('d-none');
+        
         fetch('/permisos-informes/')
             .then(r => {
                 if (!r.ok) {
@@ -21,6 +28,10 @@
             })
             .then(data => {
                 const modulosPermitidos = data.informes;
+                
+                // ✅ Ocultar loading, mostrar módulos
+                if (loadingElement) loadingElement.classList.add('d-none');
+                if (containerElement) containerElement.classList.remove('d-none');
                 
                 // Mostrar mensaje si existe
                 if (data.mensaje && data.mensaje.trim() !== '') {
@@ -36,16 +47,14 @@
                     }
                 });
                 
-                // ❌ COMENTAR PARA QUE NO SE ACTIVE NINGÚN TAB AL INICIO
-                // if (modulosPermitidos.length > 0) {
-                //     setTimeout(() => {
-                //         const primerModulo = modulosPermitidos[0];
-                //         activarTabManualmente(primerModulo);
-                //     }, 150);
-                // }
+                console.log(`✅ Módulos habilitados: ${modulosPermitidos.join(', ')}`);
             })
             .catch(err => {
                 console.error('Error al cargar permisos:', err);
+                
+                // ✅ Ocultar loading en caso de error
+                if (loadingElement) loadingElement.classList.add('d-none');
+                
                 mostrarErrorBloqueante(err.message, 'https://cormons.app/');
             });
     }

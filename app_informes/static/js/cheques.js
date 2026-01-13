@@ -80,11 +80,11 @@
                             </div>
                             <div class="cheque-details" id="details-${index}">
                                 <div class="cheque-detail-item">
-                                    <span class="cheque-detail-label">Banco</span>
+                                    <span class="cheque-detail-label"><i class="fas fa-university me-1"></i>Banco</span>
                                     <span class="cheque-detail-value">${cheque.banco || '-'}</span>
                                 </div>
                                 <div class="cheque-detail-item">
-                                    <span class="cheque-detail-label">Nº Cheque</span>
+                                    <span class="cheque-detail-label"><i class="fas fa-hashtag me-1"></i>Nº Cheque</span>
                                     <span class="cheque-detail-value">${cheque.nroCheque || '-'}</span>
                                 </div>
                                 <div class="cheque-badges">

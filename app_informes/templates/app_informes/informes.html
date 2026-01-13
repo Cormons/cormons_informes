@@ -81,6 +81,15 @@
         
                 <!-- ALERTA INFORMATIVA GENERAL (para mensajes de permisos JS) -->
                 {% include 'app_informes/modals/alerta_info_general.html' %}
+
+                <!-- 🆕 LOADING DE MÓDULOS -->
+                <div id="modulosLoading" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Cargando módulos disponibles...</p>
+                </div>
+
                 <!-- TABS DE MÓDULOS -->
                 <div class="row g-2 mb-4">
                     <div class="col-6">
