@@ -10,7 +10,7 @@
      * Consultar cheques en cartera
      */
     function consultarChequesCartera() {
-        return fetch('/cheques-cartera/')
+        return fetch('/finanzas/cheques-cartera/')
             .then(response => {
                 if (!response.ok) {
                     return response.json().then(err => {
@@ -57,7 +57,7 @@
                         
                         // Badge para cruzado
                         const badgeCruzado = cheque.cruzado === 'SI' 
-                            ? '<span class="badge bg-secondary ms-1">Cruzado</span>' 
+                            ? '<span class="badge bg-info ms-1">Cruzado</span>' 
                             : '';
                         
                         const chequeDiv = document.createElement('div');
@@ -80,11 +80,11 @@
                             </div>
                             <div class="cheque-details" id="details-${index}">
                                 <div class="cheque-detail-item">
-                                    <span class="cheque-detail-label">Banco</span>
+                                    <span class="cheque-detail-label"><i class="fas fa-university me-1"></i>Banco</span>
                                     <span class="cheque-detail-value">${cheque.banco || '-'}</span>
                                 </div>
                                 <div class="cheque-detail-item">
-                                    <span class="cheque-detail-label">Nº Cheque</span>
+                                    <span class="cheque-detail-label"><i class="fas fa-hashtag me-1"></i>Nº Cheque</span>
                                     <span class="cheque-detail-value">${cheque.nroCheque || '-'}</span>
                                 </div>
                                 <div class="cheque-badges">

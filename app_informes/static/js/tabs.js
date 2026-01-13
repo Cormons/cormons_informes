@@ -13,7 +13,7 @@
         const tabButtons = document.querySelectorAll('.module-tab');
         
         tabButtons.forEach(button => {
-            // ✅ Manejar click manualmente (evitar Bootstrap API por estructura no estándar)
+            // ✅ Manejar click manualmente
             button.addEventListener('click', function(event) {
                 event.preventDefault();
                 
@@ -33,7 +33,8 @@
                 this.classList.add('active');
                 this.setAttribute('aria-selected', 'true');
                 
-                const targetPane = document.querySelector(this.dataset.bsTarget);
+                // ✅ Usar data-module en lugar de data-bs-target
+                const targetPane = document.querySelector(`#${modulo}`);
                 if (targetPane) {
                     targetPane.classList.add('show', 'active');
                 }
