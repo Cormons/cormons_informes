@@ -217,8 +217,21 @@
                 .then(data => {
                     // ✅ VERIFICAR SI HAY CHEQUES
                     if (data && data.CHEQUES && data.CHEQUES.length > 0) {
-                        // ✅ HAY cheques → El modal ya está abierto, solo actualizar contenido
-                        console.log(`✅ Cargados ${data.CHEQUES.length} cheques`);
+                        // ✅ Verificar si hay mensaje
+                        if (data.Mensaje && data.Mensaje.trim() !== '') {
+                            // Cerrar modal de cheques
+                            modalChequesCartera.hide();
+                            
+                            // Mostrar modal azul bloqueante con el mensaje
+                            setTimeout(() => {
+                                mostrarAlerta(data.Mensaje, 'info-modal');
+                            }, 300);
+                            
+                            console.log(`ℹ️ Hay ${data.CHEQUES.length} cheques pero hay mensaje informativo`);
+                        } else {
+                            // ✅ HAY cheques SIN mensaje → Dejar modal abierto
+                            console.log(`✅ Cargados ${data.CHEQUES.length} cheques`);
+                        }
                     } else {
                         // ✅ NO hay cheques → Cerrar modal y mostrar alerta
                         modalChequesCartera.hide();
