@@ -8,16 +8,16 @@
 
     /**
      * Cargar permisos de módulos desde VFP
+     * @returns {Promise<string>} - Mensaje de VFP (si existe)
      */
     function cargarPermisosModulos() {
-        // ✅ Asegurar que el loading esté visible
         const loadingElement = document.getElementById('modulosLoading');
         const containerElement = document.getElementById('modulosContainer');
         
         if (loadingElement) loadingElement.classList.remove('d-none');
         if (containerElement) containerElement.classList.add('d-none');
         
-        fetch('/auth/permisos-informes/')
+        return fetch('/auth/permisos-informes/')
             .then(r => {
                 if (!r.ok) {
                     return r.json().then(errData => {
@@ -29,14 +29,9 @@
             .then(data => {
                 const modulosPermitidos = data.informes;
                 
-                // ✅ Ocultar loading, mostrar módulos
+                // Ocultar loading, mostrar módulos
                 if (loadingElement) loadingElement.classList.add('d-none');
                 if (containerElement) containerElement.classList.remove('d-none');
-                
-                // Mostrar mensaje si existe
-                if (data.mensaje && data.mensaje.trim() !== '') {
-                    mostrarAlerta(data.mensaje, 'info-modal');
-                }
                 
                 // Habilitar módulos permitidos
                 document.querySelectorAll('.module-tab').forEach(btn => {
@@ -48,14 +43,18 @@
                 });
                 
                 console.log(`✅ Módulos habilitados: ${modulosPermitidos.join(', ')}`);
+                
+                // Retornar el mensaje (si existe)
+                return data.mensaje || '';
             })
             .catch(err => {
                 console.error('Error al cargar permisos:', err);
                 
-                // ✅ Ocultar loading en caso de error
                 if (loadingElement) loadingElement.classList.add('d-none');
                 
                 mostrarErrorBloqueante(err.message, 'https://cormons.app/');
+                
+                throw err;
             });
     }
 

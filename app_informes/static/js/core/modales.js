@@ -6,10 +6,23 @@
     
     let modalChequesCartera = null;
     let modalErrorBloqueante = null;
+    let modalAlerta = null;
 
     // ============================================
     // INICIALIZACIÓN
     // ============================================
+    
+    /**
+     * Limpiar backdrops huérfanos de Bootstrap
+     */
+    function limpiarBackdrops() {
+        document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+            backdrop.remove();
+        });
+        document.body.classList.remove('modal-open');
+        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('padding-right');
+    }
     
     /**
      * Inicializar modales de Bootstrap
@@ -29,6 +42,17 @@
             });
             console.log('✅ Modal de error bloqueante inicializado');
         }
+        
+        const modalAlertaElement = document.getElementById('modalAlerta');
+        if (modalAlertaElement && window.bootstrap) {
+            modalAlerta = new bootstrap.Modal(modalAlertaElement, {
+                backdrop: true,
+                keyboard: true,
+                focus: true
+            });
+            
+            console.log('✅ Modal de alerta inicializado');
+        }
     }
 
     // ============================================
@@ -40,21 +64,19 @@
      */
     function mostrarErrorBloqueante(mensaje, redirectUrl) {
         console.log('🚫 Mostrando error bloqueante:', mensaje);
-        // Ocultar otros modales abiertos (evitar que queden modales superpuestos)
+        
+        // Limpiar backdrops antes de mostrar
+        limpiarBackdrops();
+        
+        // Ocultar otros modales abiertos
         try {
-            const modalChequesEl = document.getElementById('modalChequesCartera');
-            if (modalChequesEl) {
-                const inst = bootstrap.Modal.getInstance(modalChequesEl);
-                if (inst) inst.hide();
+            if (modalChequesCartera) {
+                modalChequesCartera.hide();
             }
-
-            const modalAlertaEl = document.getElementById('modalAlerta');
-            if (modalAlertaEl) {
-                const inst2 = bootstrap.Modal.getInstance(modalAlertaEl);
-                if (inst2) inst2.hide();
+            if (modalAlerta) {
+                modalAlerta.hide();
             }
         } catch (e) {
-            // Ignorar si bootstrap no está disponible aún
             console.warn('No se pudieron ocultar otros modales:', e);
         }
 
@@ -70,7 +92,6 @@
                 if (redirectUrl) {
                     window.location.href = redirectUrl;
                 } else {
-                    // Si no hay URL, solo cerrar el modal
                     if (modalErrorBloqueante) {
                         modalErrorBloqueante.hide();
                     }
@@ -92,40 +113,9 @@
     // MENSAJES INFORMATIVOS
     // ============================================
     
-    /**
-     * Mostrar mensaje informativo general (no bloqueante)
-     * Se muestra en la parte superior de la página
-     */
-    function mostrarMensajeInfoGeneral(mensaje) {
-        if (!mensaje || mensaje.trim() === '') return;
-        
-        console.log('📢 Mensaje general de VFP:', mensaje);
-        
-        const infoDiv = document.getElementById('mensajeInfoGeneral');
-        const infoTexto = document.getElementById('mensajeInfoGeneralTexto');
-        
-        if (infoDiv && infoTexto) {
-            infoTexto.textContent = mensaje;
-            infoDiv.classList.remove('d-none');
-        }
-    }
+   
     
-    /**
-     * Mostrar mensaje informativo en modal de cheques
-     */
-    function mostrarMensajeInfoCheques(mensaje) {
-        if (!mensaje || mensaje.trim() === '') return;
-        
-        console.log('📢 Mensaje de VFP (cheques):', mensaje);
-        
-        const infoDiv = document.getElementById('chequesMensajeInfo');
-        const infoTexto = document.getElementById('chequesMensajeInfoTexto');
-        
-        if (infoDiv && infoTexto) {
-            infoTexto.textContent = mensaje;
-            infoDiv.classList.remove('d-none');
-        }
-    }
+    
     
     /**
      * Mostrar error en modal de cheques
@@ -141,49 +131,68 @@
             errorDiv.classList.remove('d-none');
         }
     }
-        /**
+    
+    /**
      * Mostrar modal de alerta genérico
      * @param {string} mensaje - Texto a mostrar
      * @param {string} tipo - 'info-modal' (azul) o 'error-modal' (rojo)
+     * @returns {Promise} - Se resuelve cuando el usuario cierra el modal
      */
     function mostrarAlerta(mensaje, tipo = 'info-modal') {
-        const configs = {
-            'info-modal': { 
-                headerClass: 'bg-info text-white', 
-                titulo: 'Información', 
-                icono: 'fa-info-circle text-info',
-                btnClass: 'btn-primary'
-            },
-            'error-modal': { 
-                headerClass: 'bg-danger text-white', 
-                titulo: 'Error', 
-                icono: 'fa-exclamation-circle text-danger',
-                btnClass: 'btn-danger'
-            }
-        };
-        const config = configs[tipo];
+        if (!mensaje || mensaje.trim() === '') return Promise.resolve();
         
-        const header = document.getElementById('modal-alerta-header');
-        const titulo = document.getElementById('modal-alerta-titulo');
-        const icono = document.getElementById('modal-alerta-icono');
-        const mensajeEl = document.getElementById('modal-alerta-mensaje');
-        
-        if (header) header.className = `modal-header ${config.headerClass}`;
-        if (titulo) titulo.innerHTML = `<i class="fas ${config.icono.split(' ')[0]} me-2"></i>${config.titulo}`;
-        if (icono) icono.className = `fas ${config.icono}`;
-        if (mensajeEl) mensajeEl.textContent = mensaje;
-        
-        // ✅ Esperar un tick antes de mostrar el modal
-        setTimeout(() => {
-            const modalAlerta = new bootstrap.Modal(document.getElementById('modalAlerta'), {
-                backdrop: 'static',
-                keyboard: true,
-                focus: true
-            });
-            modalAlerta.show();
-        }, 50);
-        
-        console.log(`ℹ️ Alerta mostrada: ${mensaje.substring(0, 50)}...`);
+        return new Promise((resolve) => {
+            const configs = {
+                'info-modal': { 
+                    headerClass: 'bg-info text-white', 
+                    titulo: 'Información', 
+                    icono: 'fa-info-circle text-info',
+                    btnClass: 'btn-primary'
+                },
+                'error-modal': { 
+                    headerClass: 'bg-danger text-white', 
+                    titulo: 'Error', 
+                    icono: 'fa-exclamation-circle text-danger',
+                    btnClass: 'btn-danger'
+                }
+            };
+            const config = configs[tipo];
+            
+            const header = document.getElementById('modal-alerta-header');
+            const titulo = document.getElementById('modal-alerta-titulo');
+            const icono = document.getElementById('modal-alerta-icono');
+            const mensajeEl = document.getElementById('modal-alerta-mensaje');
+            
+            if (header) header.className = `modal-header ${config.headerClass}`;
+            if (titulo) titulo.innerHTML = `<i class="fas ${config.icono.split(' ')[0]} me-2"></i>${config.titulo}`;
+            if (icono) icono.className = `fas ${config.icono}`;
+            if (mensajeEl) mensajeEl.textContent = mensaje;
+            
+            // Limpiar backdrops antes de mostrar
+            limpiarBackdrops();
+            
+            // Resolver la Promise cuando el usuario cierra el modal
+            const modalElement = document.getElementById('modalAlerta');
+            const onHidden = () => {
+                modalElement.removeEventListener('hidden.bs.modal', onHidden);
+                limpiarBackdrops(); // Limpiar al cerrar también
+                resolve();
+            };
+            modalElement.addEventListener('hidden.bs.modal', onHidden);
+            
+            // Esperar a que el DOM se actualice antes de mostrar
+            setTimeout(() => {
+                if (modalAlerta) {
+                    modalAlerta.show();
+                } else {
+                    console.warn('⚠️ Modal de alerta no inicializado, usando alert()');
+                    alert(mensaje);
+                    resolve();
+                }
+            }, 100);
+            
+            console.log(`ℹ️ Alerta mostrada: ${mensaje.substring(0, 50)}...`);
+        });
     }
 
     // ============================================
@@ -202,7 +211,10 @@
             return;
         }
         
-        // ✅ ABRIR EL MODAL INMEDIATAMENTE
+        // Limpiar backdrops antes de abrir
+        limpiarBackdrops();
+        
+        // Abrir el modal inmediatamente
         modalChequesCartera.show();
         
         // Resetear estado del modal y mostrar loading
@@ -215,17 +227,17 @@
         if (window.consultarChequesCartera) {
             window.consultarChequesCartera()
                 .then(data => {
-                    // ✅ VERIFICAR SI HAY CHEQUES
+                    // Verificar si hay cheques
                     if (data && data.CHEQUES && data.CHEQUES.length > 0) {
-                        // ✅ HAY cheques → El modal ya está abierto, solo actualizar contenido
+                        // Hay cheques → El modal ya está abierto, solo actualizar contenido
                         console.log(`✅ Cargados ${data.CHEQUES.length} cheques`);
                     } else {
-                        // ✅ NO hay cheques → Cerrar modal y mostrar alerta
+                        // No hay cheques → Cerrar modal y mostrar alerta
                         modalChequesCartera.hide();
                         
                         const mensaje = data?.Mensaje || 'No se encontraron cheques en cartera';
                         
-                        // ✅ Esperar a que el modal se cierre antes de mostrar alerta
+                        // Esperar a que el modal se cierre antes de mostrar alerta
                         setTimeout(() => {
                             mostrarAlerta(mensaje, 'info-modal');
                         }, 300);
@@ -262,11 +274,12 @@
     // ============================================
     
     window.mostrarErrorBloqueante = mostrarErrorBloqueante;
-    window.mostrarMensajeInfoGeneral = mostrarMensajeInfoGeneral;
-    window.mostrarMensajeInfoCheques = mostrarMensajeInfoCheques;
+    
+    
     window.mostrarErrorCheques = mostrarErrorCheques;
     window.abrirModalChequesCartera = abrirModalChequesCartera;
     window.mostrarAlerta = mostrarAlerta;
+    window.limpiarBackdrops = limpiarBackdrops;
 
     console.log('✅ modales.js cargado');
 })();

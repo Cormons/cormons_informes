@@ -25,7 +25,7 @@
                 // Ocultar loading
                 document.getElementById('chequesLoading').classList.add('d-none');
                 
-                // ✅ Solo procesar y renderizar si HAY cheques
+                // Solo procesar y renderizar si HAY cheques
                 if (data.CHEQUES && data.CHEQUES.length > 0) {
                     // Calcular totales generales
                     const totalCheques = data.CHEQUES.length;
@@ -115,11 +115,19 @@
                     // Event listener para botón copiar
                     document.getElementById('btnCopiarSeleccionados').onclick = copiarChequesSeleccionados;
                     
+                    // ✅ MOSTRAR MENSAJE DE VFP SI EXISTE (como modal independiente)
+                    if (data.Mensaje && data.Mensaje.trim() !== '') {
+                        // Esperar a que el modal de cheques se renderice completamente
+                        setTimeout(() => {
+                            mostrarAlerta(data.Mensaje, 'info-modal');
+                        }, 500);
+                    }
+                    
                     // Mostrar resultados
                     document.getElementById('chequesResultados').classList.remove('d-none');
                 }
 
-                // ✅ SIEMPRE devolver data (modales.js decide qué hacer)
+                // SIEMPRE devolver data (modales.js decide qué hacer)
                 return data;
             })
             .catch(error => {
