@@ -1,13 +1,11 @@
 """
-Servicios y lógica de negocio para la aplicación controlStock
-Incluye llamadas a APIs externas y validaciones
+Comandos VFP comunes usados por toda la aplicación
+Centraliza funcionalidad compartida para evitar duplicación
 """
 import logging
 from datetime import datetime
-
-from django.http import request
-from ...core.tcp_client import enviar_consulta_tcp
-from ... import APP_VERSION
+from .tcp_client import enviar_consulta_tcp
+from .. import APP_VERSION
 
 logger = logging.getLogger(__name__)
 
@@ -55,10 +53,18 @@ def formatear_fecha(fecha_str):
     # Si no se pudo parsear, devolver el string original
     return fecha_str
 
+
 def comando_verificarToken(token, request):
     """
     Envía comando verificarToken a VFP.
     Devuelve la respuesta literal de VFP (o None si falla la conexión).
+    
+    Args:
+        token: Token de autenticación del usuario
+        request: Request de Django para obtener datos de conexión
+        
+    Returns:
+        dict: Respuesta de VFP con estado, usuario, nombre, mensaje
     """
     mensaje = {
         "Comando": "verificarToken",
@@ -68,7 +74,22 @@ def comando_verificarToken(token, request):
     }
     return enviar_consulta_tcp(mensaje, request=request)
 
+
 def comando_permisosInformes(token, request):
+    """
+    Consulta a VFP los módulos de informes habilitados para el usuario.
+    
+    Args:
+        token: Token de autenticación del usuario
+        request: Request de Django para obtener datos de conexión
+        
+    Returns:
+        dict: {
+            "estado": bool,
+            "mensaje": str,
+            "informes": list[str]  # Lista de módulos habilitados en minúsculas
+        }
+    """
     mensaje = {
         "Comando": "permisosInformes",
         "Token": token,
@@ -97,7 +118,7 @@ def comando_permisosInformes(token, request):
     informes_normalizados = []
 
     for item in informes_vfp:
-        descripcion = item.get("descripcion", "").lower()  # ← Convertir a minúsculas
+        descripcion = item.get("descripcion", "").lower()
         if descripcion:
             informes_normalizados.append(descripcion)
 
@@ -105,32 +126,4 @@ def comando_permisosInformes(token, request):
         "estado": True,
         "mensaje": r.get("mensaje", ""),
         "informes": informes_normalizados  
-    }
-
-def comando_chequesCartera(token, usuario, request, parametros=None):
-    mensaje = {
-        "Comando": "chequesCartera",
-        "Token": token,
-        "Vista": "INFORMES",
-        "usrActivo": usuario
-    }
-    
-    r = enviar_consulta_tcp(mensaje, request=request)
-    
-    # Sin respuesta del servidor
-    if not r:
-        return {
-            "estado": False,
-            "mensaje": "Sin respuesta del servidor",
-            "CHEQUES": [],  # ✅ Cambiar a mayúsculas
-        }
-    
-    # ✅ Buscar CHEQUES con mayúsculas (como envía VFP)
-    cheques = r.get("CHEQUES", [])
-    
-    # ✅ Devolver con mayúsculas (para mantener consistencia)
-    return {
-        "estado": r.get("estado", False),
-        "mensaje": r.get("mensaje", ""),
-        "CHEQUES": cheques,  # ✅ Cambiar a mayúsculas
     }

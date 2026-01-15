@@ -220,7 +220,7 @@
         // Resetear estado del modal y mostrar loading
         document.getElementById('chequesLoading').classList.remove('d-none');
         document.getElementById('chequesError').classList.add('d-none');
-        document.getElementById('chequesMensajeInfo').classList.add('d-none');
+        
         document.getElementById('chequesResultados').classList.add('d-none');
         
         // Llamar a la función de consulta

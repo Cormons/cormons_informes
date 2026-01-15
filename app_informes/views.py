@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .utils import obtener_datos_cookies, renderizar_error, borrar_cookies_sesion
-from .auth.vfp_comandos import comando_verificarToken
+from .core.vfp_comandos import comando_verificarToken
 
 
 @ensure_csrf_cookie
