@@ -1,0 +1,5 @@
+document.cookie = 'authToken=2512231204320  _7CS0PVR7W; path=/; max-age=3600';
+document.cookie = 'user_usuario=A; path=/; max-age=3600';
+document.cookie = 'empresa_ip = "servidorseguro.serinformatica.ar"; path=/; max-age=3600';
+document.cookie = 'empresa_nombre = "servidor cormons"; path=/; max-age=3600';
+document.cookie = 'empresa_puerto = 51122; path=/; max-age=3600';
