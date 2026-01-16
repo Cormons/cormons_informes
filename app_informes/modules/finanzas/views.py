@@ -1,9 +1,8 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from datetime import datetime
 from app_informes.utils import obtener_datos_cookies
+from app_informes.core.vfp_comandos import formatear_fecha  # ← NUEVO IMPORT
 from .vfp_comandos import comando_chequesCartera
-
 
 @require_http_methods(["GET"])
 def chequesCartera_view(request):
@@ -33,16 +32,8 @@ def chequesCartera_view(request):
     cheques_normalizados = []
     
     for cheque in cheques_vfp:
-        # Normalizar formato de fecha: "20260113" → "13/01/2026"
-        fecha_cobro_raw = cheque.get("fechacobro", "")
-        if len(fecha_cobro_raw) == 8:  # YYYYMMDD
-            try:
-                fecha_obj = datetime.strptime(fecha_cobro_raw, "%Y%m%d")
-                fecha_cobro = fecha_obj.strftime("%d/%m/%Y")
-            except:
-                fecha_cobro = fecha_cobro_raw
-        else:
-            fecha_cobro = fecha_cobro_raw
+        # Normalizar formato de fecha usando función centralizada
+        fecha_cobro = formatear_fecha(cheque.get("fechacobro", ""))
         
         # Normalizar boolean → string "SI"/"NO"
         echeq = "SI" if cheque.get("echeq") is True else "NO"
