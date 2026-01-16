@@ -26,6 +26,12 @@
                 
                 <!-- Resultados -->
                 <div id="chequesResultados" class="d-none">
+                    <div class="seleccionar-todos-container mb-3">
+                        <label class="form-check-label">
+                            <input type="checkbox" id="checkboxSeleccionarTodos" class="form-check-input me-2">
+                            <strong>Seleccionar todos</strong>
+                        </label>
+                    </div>
                     <div id="chequesListaExpandible"></div>
                 </div>
             </div>
@@ -59,6 +65,18 @@
 /* ============================================
    MODAL HEADER - AMARILLO
    ============================================ */
+.seleccionar-todos-container {
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.seleccionar-todos-container label {
+    cursor: pointer;
+    margin: 0;
+    user-select: none;
+}
 #modalChequesCartera .modal-header {
     background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
     border-bottom: none;

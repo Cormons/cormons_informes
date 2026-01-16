@@ -114,6 +114,7 @@
                     
                     // Event listener para botón copiar
                     document.getElementById('btnCopiarSeleccionados').onclick = copiarChequesSeleccionados;
+                    document.getElementById('checkboxSeleccionarTodos').addEventListener('change', toggleSeleccionarTodos);
                     
                     // ✅ MOSTRAR MENSAJE DE VFP SI EXISTE (como modal independiente)
                     if (data.Mensaje && data.Mensaje.trim() !== '') {
@@ -144,6 +145,7 @@
      */
     function actualizarTotalesSeleccionados() {
         const checkboxes = document.querySelectorAll('.cheque-checkbox:checked');
+        const totalCheckboxes = document.querySelectorAll('.cheque-checkbox');
         const cantidad = checkboxes.length;
         
         let importeTotal = 0;
@@ -159,6 +161,26 @@
         
         // Habilitar/deshabilitar botón copiar
         document.getElementById('btnCopiarSeleccionados').disabled = cantidad === 0;
+        
+        // 🆕 Actualizar estado del checkbox "Seleccionar todos"
+        const checkboxMaster = document.getElementById('checkboxSeleccionarTodos');
+        if (checkboxMaster) {
+            checkboxMaster.checked = cantidad === totalCheckboxes.length && cantidad > 0;
+            checkboxMaster.indeterminate = cantidad > 0 && cantidad < totalCheckboxes.length;
+        }
+    }
+    /**
+     * Seleccionar/deseleccionar todos los cheques
+     */
+    function toggleSeleccionarTodos() {
+        const checkboxMaster = document.getElementById('checkboxSeleccionarTodos');
+        const checkboxes = document.querySelectorAll('.cheque-checkbox');
+        
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = checkboxMaster.checked;
+        });
+        
+        actualizarTotalesSeleccionados();
     }
 
     /**
