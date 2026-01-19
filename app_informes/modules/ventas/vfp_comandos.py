@@ -23,8 +23,8 @@ def comando_clienteDescripcion(token, usuario, request, descripcion):
         dict: Respuesta de VFP con lista de clientes o error
     """
     mensaje = {
-        "comando": "clienteDescripcion",
-        "token": token,
+        "Comando": "clienteDescripcion",  # ← Cambio aquí
+        "Token": token,                    # ← Cambio aquí
         "Vista": "INFORMES",
         "UsrActivo": usuario,
         "descripcion": descripcion
@@ -63,8 +63,8 @@ def comando_clienteCodigo(token, usuario, request, codigo_cliente):
         dict: Respuesta de VFP con información completa del cliente o error
     """
     mensaje = {
-        "comando": "clienteCodigo",
-        "token": token,
+        "Comando": "clienteCodigo",  # ← Cambio aquí
+        "Token": token,              # ← Cambio aquí
         "Vista": "INFORMES",
         "UsrActivo": usuario,
         "codigoCliente": codigo_cliente

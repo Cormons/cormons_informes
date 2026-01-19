@@ -153,16 +153,26 @@
                 document.getElementById('loadingBusqueda').classList.add('d-none');
                 
                 if (data.CLIENTE) {
+                    // ✅ Hay cliente, mostrar información
                     mostrarInformacionCliente(data.CLIENTE);
                     
-                    // Mostrar mensaje informativo si existe (estado true con mensaje)
+                    // Mostrar mensaje informativo si existe
                     if (data.Mensaje && data.Mensaje.trim() !== '') {
                         setTimeout(() => {
                             mostrarAlerta(data.Mensaje, 'info-modal');
                         }, 300);
                     }
                 } else {
-                    mostrarError('Cliente no encontrado');
+                    // ❌ NO hay cliente pero estado=true
+                    // Cerrar modal y mostrar mensaje informativo
+                    if (modalEstadoCliente) {
+                        modalEstadoCliente.hide();
+                    }
+                    
+                    const mensaje = data.Mensaje || 'No se encontró el cliente';
+                    setTimeout(() => {
+                        mostrarAlerta(mensaje, 'info-modal');
+                    }, 300);
                 }
                 
                 return data;
@@ -195,6 +205,7 @@
                 document.getElementById('loadingBusqueda').classList.add('d-none');
                 
                 if (data.CLIENTES && data.CLIENTES.length > 0) {
+                    // ✅ Hay clientes
                     if (data.CLIENTES.length === 1) {
                         // Un solo resultado, mostrar directamente
                         mostrarInformacionCliente(data.CLIENTES[0]);
@@ -210,7 +221,16 @@
                         }, 300);
                     }
                 } else {
-                    mostrarError('No se encontraron clientes con esa descripción');
+                    // ❌ NO hay clientes pero estado=true
+                    // Cerrar modal y mostrar mensaje informativo
+                    if (modalEstadoCliente) {
+                        modalEstadoCliente.hide();
+                    }
+                    
+                    const mensaje = data.Mensaje || 'No se encontraron clientes';
+                    setTimeout(() => {
+                        mostrarAlerta(mensaje, 'info-modal');
+                    }, 300);
                 }
                 
                 return data;

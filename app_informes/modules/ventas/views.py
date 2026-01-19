@@ -53,7 +53,7 @@ def buscarClienteDescripcion_view(request):
     
     mensaje = respuesta_vfp.get("mensaje", "")
     
-    # 7) Devolver datos
+    # 7) Devolver datos (estado=true de VFP, aunque clientes esté vacío)
     return JsonResponse({
         "CLIENTES": clientes_plural,
         "Mensaje": mensaje
@@ -84,32 +84,29 @@ def buscarClienteCodigo_view(request):
     # 3) Consultar VFP
     respuesta_vfp = comando_clienteCodigo(token, usuario, request, codigo)
     
-    # 4) Sin respuesta
+    # 4) Sin respuesta del servidor
     if not respuesta_vfp:
         return JsonResponse({"error": "Sin respuesta del servidor"}, status=500)
     
     # 5) VFP devolvió estado=False
     estado_vfp = respuesta_vfp.get("estado")
     if estado_vfp is False or estado_vfp == "False":
-        mensaje = respuesta_vfp.get("mensaje", "Cliente no encontrado")
+        mensaje = respuesta_vfp.get("mensaje", "Error al consultar cliente")
         return JsonResponse({"error": mensaje}, status=400)
     
-    # 6) Obtener cliente
+    # 6) Obtener cliente y mensaje
     cliente = respuesta_vfp.get("CLIENTE")
-    
-    if not cliente:
-        return JsonResponse({"error": "Cliente no encontrado"}, status=404)
-    
-    # 7) Normalizar fechas si existen
-    if cliente.get("fechaUltimaCompra"):
-        cliente["fechaUltimaCompra"] = formatear_fecha(cliente["fechaUltimaCompra"])
-    
-    if cliente.get("fechaUltimoPago"):
-        cliente["fechaUltimoPago"] = formatear_fecha(cliente["fechaUltimoPago"])
-    
     mensaje = respuesta_vfp.get("mensaje", "")
     
-    # 8) Devolver datos normalizados
+    # 7) Normalizar fechas si existe el cliente
+    if cliente:
+        if cliente.get("fechaUltimaCompra"):
+            cliente["fechaUltimaCompra"] = formatear_fecha(cliente["fechaUltimaCompra"])
+        
+        if cliente.get("fechaUltimoPago"):
+            cliente["fechaUltimoPago"] = formatear_fecha(cliente["fechaUltimoPago"])
+    
+    # 8) Devolver datos (estado=true de VFP, aunque cliente sea None)
     return JsonResponse({
         "CLIENTE": cliente,
         "Mensaje": mensaje
