@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from app_informes.utils import obtener_datos_cookies
-from .vfp_comandos import comando_permisosInformes
+from app_informes.core.vfp_comandos import comando_permisosInformes
 
 
 @require_http_methods(["GET"])

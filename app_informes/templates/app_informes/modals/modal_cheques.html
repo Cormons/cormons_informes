@@ -1,7 +1,7 @@
 {% load static %}
 <!-- Modal: Cheques en Cartera -->
 <div class="modal fade" id="modalChequesCartera" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
@@ -23,12 +23,15 @@
                     <span id="chequesErrorMensaje"></span>
                 </div>
                 <!-- Mensaje Info -->
-                <div id="chequesMensajeInfo" class="alert alert-info d-none">
-                    <i class="fas fa-info-circle me-2"></i>
-                    <span id="chequesMensajeInfoTexto"></span>
-                </div>
+                
                 <!-- Resultados -->
                 <div id="chequesResultados" class="d-none">
+                    <div class="seleccionar-todos-container mb-3">
+                        <label class="form-check-label">
+                            <input type="checkbox" id="checkboxSeleccionarTodos" class="form-check-input me-2">
+                            <strong>Seleccionar todos</strong>
+                        </label>
+                    </div>
                     <div id="chequesListaExpandible"></div>
                 </div>
             </div>
@@ -62,6 +65,18 @@
 /* ============================================
    MODAL HEADER - AMARILLO
    ============================================ */
+.seleccionar-todos-container {
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.seleccionar-todos-container label {
+    cursor: pointer;
+    margin: 0;
+    user-select: none;
+}
 #modalChequesCartera .modal-header {
     background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
     border-bottom: none;
