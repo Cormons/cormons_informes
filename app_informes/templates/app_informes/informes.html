@@ -80,7 +80,7 @@
                 </h2>
         
                 <!-- ALERTA INFORMATIVA GENERAL (para mensajes de permisos JS) -->
-                {% include 'app_informes/modals/alerta_info_general.html' %}
+                {% include 'app_informes/modals/core/alerta_info_general.html' %}
 
                 <!-- 🆕 LOADING DE MÓDULOS -->
                 <div id="modulosLoading" class="text-center py-5">
@@ -137,7 +137,22 @@
                 <!-- CONTENIDO DE TABS -->
                 <div class="tab-content">
                     <!-- Tab Ventas -->
-                    <div class="tab-pane fade" id="ventas" role="tabpanel"></div>
+                    <div class="tab-pane fade" id="ventas" role="tabpanel">
+                        <div class="row g-3">
+                            <!-- Estado de Cliente -->
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card shadow-sm border-primary hover-card" onclick="abrirModalEstadoCliente()">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <i class="fas fa-user-check text-primary me-2"></i>
+                                            Estado de un Cliente
+                                        </h5>
+                                        <p class="card-text text-muted">Consultar información y estado de cuenta de clientes</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Tab Compras -->
                     <div class="tab-pane fade" id="compras" role="tabpanel"></div>
                     <!-- Tab Finanzas -->
@@ -189,8 +204,10 @@
     </div>
 
     <!-- INCLUIR MODALES -->
-    {% include 'app_informes/modals/modal_cheques.html' %}
-    {% include 'app_informes/modals/modal_error_bloqueante.html' %}
+    
+    {% include 'app_informes/modals/core/modal_error_bloqueante.html' %}
+    {% include 'app_informes/modals/finanzas/modal_cheques.html' %}
+    {% include 'app_informes/modals/ventas/modal_estado_cliente.html' %}
 
     <!-- JavaScript -->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -201,6 +218,7 @@
 
     <!-- Módulos de negocio -->
     <script src="{% static 'js/modules/finanzas/cheques.js' %}"></script>
+    <script src="{% static 'js/modules/ventas/estadoCliente.js' %}"></script>
 
     <!-- Gestión de permisos y tabs -->
     <script src="{% static 'js/permisos.js' %}"></script>

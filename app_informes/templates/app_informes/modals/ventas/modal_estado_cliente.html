@@ -1,0 +1,150 @@
+<!-- Modal: Estado de Cliente -->
+<div class="modal fade" id="modalEstadoCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-user-check me-2"></i>Estado de Cliente
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                
+                <!-- Sección de Búsqueda -->
+                <div id="seccionBusqueda">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tipo de búsqueda:</label>
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" class="btn-check" name="tipoBusqueda" id="radioCodigo" value="codigo" checked>
+                            <label class="btn btn-outline-primary" for="radioCodigo">
+                                <i class="fas fa-hashtag me-1"></i>Por Código
+                            </label>
+                            
+                            <input type="radio" class="btn-check" name="tipoBusqueda" id="radioDescripcion" value="descripcion">
+                            <label class="btn btn-outline-primary" for="radioDescripcion">
+                                <i class="fas fa-font me-1"></i>Por Descripción
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="inputBusqueda" class="form-label fw-bold">
+                            <span id="labelBusqueda">Código del cliente:</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputBusqueda" placeholder="Ingrese el código">
+                            <button class="btn btn-primary" type="button" id="btnBuscar">
+                                <i class="fas fa-search me-1"></i>Buscar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Mensaje de error en búsqueda -->
+                    <div id="errorBusqueda" class="alert alert-danger d-none">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <span id="errorBusquedaMensaje"></span>
+                    </div>
+                    
+                    <!-- Loading búsqueda -->
+                    <div id="loadingBusqueda" class="text-center py-3 d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Buscando...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Buscando cliente...</p>
+                    </div>
+                    
+                    <!-- Lista de resultados (múltiples clientes) -->
+                    <div id="listaResultados" class="d-none">
+                        <hr>
+                        <h6 class="fw-bold mb-3">Seleccione un cliente:</h6>
+                        <div id="listaClientesContainer" class="list-group"></div>
+                    </div>
+                </div>
+                
+                <!-- Sección de Información del Cliente -->
+                <div id="seccionInformacion" class="d-none">
+                    <!-- Loading información -->
+                    <div id="loadingInformacion" class="text-center py-5 d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-3 text-muted">Cargando información del cliente...</p>
+                    </div>
+                    
+                    <!-- Información del cliente -->
+                    <div id="infoCliente" class="d-none">
+                        <!-- Observaciones (si existen) -->
+                        <div id="observacionesContainer" class="d-none">
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <strong>Observaciones:</strong>
+                                <div id="observacionesTexto"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Datos principales -->
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-3 text-muted">Datos del Cliente</h6>
+                                <div class="row">
+                                    <div class="col-md-4 mb-2">
+                                        <strong>Código:</strong>
+                                        <div id="clienteCodigo">-</div>
+                                    </div>
+                                    <div class="col-md-8 mb-2">
+                                        <strong>Razón Social:</strong>
+                                        <div id="clienteRazonSocial">-</div>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <strong>CUIT:</strong>
+                                        <div id="clienteCuit">-</div>
+                                    </div>
+                                    <div class="col-md-8 mb-2">
+                                        <strong>Saldo Cta. Cte.:</strong>
+                                        <div id="clienteSaldo">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Última compra y pago -->
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-3 text-muted">Movimientos</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <strong>Fecha Última Compra:</strong>
+                                        <div id="clienteFechaCompra">-</div>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <strong>Importe Última Compra:</strong>
+                                        <div id="clienteImporteCompra">-</div>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <strong>Fecha Último Pago:</strong>
+                                        <div id="clienteFechaPago">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Nota -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">Nota</h6>
+                                <div id="clienteNota">-</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <button class="btn btn-secondary" type="button" id="btnNuevaBusqueda">
+                                <i class="fas fa-arrow-left me-1"></i>Nueva Búsqueda
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
