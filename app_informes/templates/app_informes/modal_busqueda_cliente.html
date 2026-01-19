@@ -1,0 +1,50 @@
+<!-- Sección de Búsqueda -->
+                <div id="seccionBusqueda">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tipo de búsqueda:</label>
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" class="btn-check" name="tipoBusqueda" id="radioCodigo" value="codigo" checked>
+                            <label class="btn btn-outline-primary" for="radioCodigo">
+                                <i class="fas fa-hashtag me-1"></i>Por Código
+                            </label>
+                            
+                            <input type="radio" class="btn-check" name="tipoBusqueda" id="radioDescripcion" value="descripcion">
+                            <label class="btn btn-outline-primary" for="radioDescripcion">
+                                <i class="fas fa-font me-1"></i>Por Descripción
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="inputBusqueda" class="form-label fw-bold">
+                            <span id="labelBusqueda">Código del cliente:</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputBusqueda" placeholder="Ingrese el código">
+                            <button class="btn btn-primary" type="button" id="btnBuscar">
+                                <i class="fas fa-search me-1"></i>Buscar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Mensaje de error en búsqueda -->
+                    <div id="errorBusqueda" class="alert alert-danger d-none">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <span id="errorBusquedaMensaje"></span>
+                    </div>
+                    
+                    <!-- Loading búsqueda -->
+                    <div id="loadingBusqueda" class="text-center py-3 d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Buscando...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Buscando cliente...</p>
+                    </div>
+                    
+                    <!-- Lista de resultados (múltiples clientes) -->
+                    <div id="listaResultados" class="d-none">
+                        <hr>
+                        <h6 class="fw-bold mb-3">Seleccione un cliente:</h6>
+                        <div id="listaClientesContainer" class="list-group"></div>
+                    </div>
+                </div>
