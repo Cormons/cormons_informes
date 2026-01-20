@@ -119,11 +119,21 @@
     }
 }
 
-/* Asegurar que modal de alerta siempre esté encima */
+/* Asegurar que modal de alerta siempre esté encima de otros modales */
 #modalAlerta {
-    z-index: 1060 !important;
+    z-index: 1070 !important;
 }
 
-#modalAlerta .modal-backdrop {
-    z-index: 1055 !important;
+/* Backdrop específico para modal de alerta (más alto que otros modales) */
+.modal-backdrop.modal-alerta-backdrop {
+    z-index: 1065 !important;
+}
+
+/* Modal de error bloqueante debe estar aún más arriba */
+#modalErrorBloqueante {
+    z-index: 1080 !important;
+}
+
+.modal-backdrop.modal-error-backdrop {
+    z-index: 1075 !important;
 }

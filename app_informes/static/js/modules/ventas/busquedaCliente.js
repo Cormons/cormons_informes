@@ -153,7 +153,7 @@
             mostrarSeccion('busqueda');
             // Error de VFP: modal rojo bloqueante
             if (window.mostrarErrorBloqueante) {
-                window.mostrarErrorBloqueante(err.message || 'Error al buscar', null);
+                window.mostrarErrorBloqueante(err.message || 'Error al buscar');
             }
         });
     }
