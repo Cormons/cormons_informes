@@ -1,0 +1,5 @@
+# Django
+Django>=5.2.0
+
+# Configuración de entorno
+django-environ>=0.12.0
