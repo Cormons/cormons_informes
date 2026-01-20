@@ -132,6 +132,7 @@
         const input = document.getElementById('inputBusqueda').value.trim();
 
         if (!input) {
+            // Validación local: mantener inline
             mostrarErrorBusqueda('Debe ingresar un valor para buscar');
             return;
         }
@@ -150,7 +151,10 @@
         promesaBusqueda.catch(err => {
             console.error('❌ Error en búsqueda:', err);
             mostrarSeccion('busqueda');
-            mostrarErrorBusqueda(err.message || 'Error al buscar');
+            // Error de VFP: modal rojo bloqueante
+            if (window.mostrarErrorBloqueante) {
+                window.mostrarErrorBloqueante(err.message || 'Error al buscar', null);
+            }
         });
     }
 
@@ -176,9 +180,13 @@
                         onClienteSeleccionado(data.CLIENTE);
                     }
                 } else {
-                    // No se encontró cliente
+                    // No se encontró cliente - mensaje de VFP
                     mostrarSeccion('busqueda');
-                    mostrarErrorBusqueda(data.Mensaje || 'No se encontró el cliente');
+                    const mensaje = data.Mensaje || 'No se encontró el cliente';
+                    // Modal azul informativo para estado=true sin datos
+                    if (window.mostrarAlerta) {
+                        window.mostrarAlerta(mensaje, 'info-modal');
+                    }
                 }
 
                 return data;
@@ -210,8 +218,13 @@
                         mostrarListaClientes(data.CLIENTES);
                     }
                 } else {
+                    // No se encontraron clientes - mensaje de VFP
                     mostrarSeccion('busqueda');
-                    mostrarErrorBusqueda(data.Mensaje || 'No se encontraron clientes');
+                    const mensaje = data.Mensaje || 'No se encontraron clientes';
+                    // Modal azul informativo para estado=true sin datos
+                    if (window.mostrarAlerta) {
+                        window.mostrarAlerta(mensaje, 'info-modal');
+                    }
                 }
 
                 return data;
