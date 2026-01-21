@@ -9,9 +9,9 @@
     /**
      * Redirigir al login
      */
-    function redirigirLogin() {
-        window.location.href = 'https://cormons.app/';
-    }
+    // function redirigirLogin() {
+    //     window.location.href = 'https://cormons.app/';
+    // }
 
     /**
      * Flujo de inicialización SECUENCIAL
@@ -53,7 +53,7 @@
     document.addEventListener('DOMContentLoaded', inicializarAplicacion);
 
     // Exponer funciones globalmente
-    window.redirigirLogin = redirigirLogin;
+    // window.redirigirLogin = redirigirLogin;
     
     console.log('✅ informes.js cargado');
 })();

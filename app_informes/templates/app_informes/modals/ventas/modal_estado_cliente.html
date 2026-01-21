@@ -2,11 +2,11 @@
 <div class="modal fade" id="modalEstadoCliente" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header" id="modalEstadoClienteHeader">
+            <div class="modal-header modal-header-gradient ventas">
                 <h5 class="modal-title">
                     <i class="fas fa-user-check me-2"></i>Estado de Cliente
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
 
@@ -26,12 +26,12 @@
                     <!-- Información del cliente -->
                     <div id="infoCliente" class="d-none">
                         <!-- Observaciones (si existen) -->
-                        <div id="observacionesContainer" class="d-none">
-                            <div class="cliente-observaciones">
-                                <div class="observaciones-icon">
+                        <div id="observacionesContainer" class="d-none mb-3">
+                            <div class="alert-banner danger">
+                                <div class="icon">
                                     <i class="fas fa-exclamation-triangle"></i>
                                 </div>
-                                <div class="observaciones-content">
+                                <div class="content">
                                     <strong>Observaciones</strong>
                                     <div id="observacionesTexto"></div>
                                 </div>
@@ -39,18 +39,18 @@
                         </div>
 
                         <!-- Cabecera del cliente -->
-                        <div class="cliente-header-card">
-                            <div class="cliente-avatar">
+                        <div class="info-card-header mb-3">
+                            <div class="icon-box md primary">
                                 <i class="fas fa-building"></i>
                             </div>
-                            <div class="cliente-header-info">
-                                <h4 id="clienteRazonSocial" class="cliente-nombre">-</h4>
-                                <div class="cliente-identificadores">
-                                    <span class="cliente-badge codigo">
+                            <div class="flex-grow-1" style="min-width: 0;">
+                                <h4 id="clienteRazonSocial" class="mb-2 fw-bold" style="word-wrap: break-word;">-</h4>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <span class="badge-custom primary">
                                         <i class="fas fa-hashtag"></i>
                                         <span id="clienteCodigo">-</span>
                                     </span>
-                                    <span class="cliente-badge cuit">
+                                    <span class="badge-custom neutral">
                                         <i class="fas fa-id-card"></i>
                                         <span id="clienteCuit">-</span>
                                     </span>
@@ -59,49 +59,50 @@
                         </div>
 
                         <!-- Saldo destacado -->
-                        <div class="cliente-saldo-card" id="clienteSaldoCard">
-                            <div class="saldo-label">
+                        <div class="saldo-card mb-3" id="clienteSaldoCard">
+                            <div class="label">
                                 <i class="fas fa-wallet me-2"></i>Saldo Cuenta Corriente
                             </div>
-                            <div class="saldo-valor" id="clienteSaldo">-</div>
+                            <div class="value" id="clienteSaldo">-</div>
+                            <span class="badge-saldo" id="badgeSaldo"></span>
                         </div>
 
                         <!-- Grid de información -->
-                        <div class="cliente-info-grid">
+                        <div class="info-grid mb-3">
                             <!-- Última compra -->
-                            <div class="cliente-info-item">
-                                <div class="info-icon compra">
+                            <div class="info-card d-flex gap-3">
+                                <div class="icon-box sm primary-light">
                                     <i class="fas fa-shopping-cart"></i>
                                 </div>
-                                <div class="info-content">
-                                    <span class="info-label">Última Compra</span>
-                                    <span class="info-fecha" id="clienteFechaCompra">-</span>
-                                    <span class="info-importe" id="clienteImporteCompra">-</span>
+                                <div class="d-flex flex-column">
+                                    <span class="label-uppercase mb-1">Última Compra</span>
+                                    <span class="fw-semibold" id="clienteFechaCompra">-</span>
+                                    <span class="fw-bold text-primary mono" id="clienteImporteCompra">-</span>
                                 </div>
                             </div>
 
                             <!-- Último pago -->
-                            <div class="cliente-info-item">
-                                <div class="info-icon pago">
+                            <div class="info-card d-flex gap-3">
+                                <div class="icon-box sm success-light">
                                     <i class="fas fa-hand-holding-usd"></i>
                                 </div>
-                                <div class="info-content">
-                                    <span class="info-label">Último Pago</span>
-                                    <span class="info-fecha" id="clienteFechaPago">-</span>
+                                <div class="d-flex flex-column">
+                                    <span class="label-uppercase mb-1">Último Pago</span>
+                                    <span class="fw-semibold" id="clienteFechaPago">-</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Nota -->
-                        <div class="cliente-nota-card" id="clienteNotaCard">
-                            <div class="nota-header">
+                        <div class="note-card mb-3" id="clienteNotaCard">
+                            <div class="header">
                                 <i class="fas fa-sticky-note me-2"></i>Nota
                             </div>
-                            <div class="nota-contenido" id="clienteNota">-</div>
+                            <div class="content" id="clienteNota">-</div>
                         </div>
 
                         <!-- Acciones -->
-                        <div class="cliente-acciones">
+                        <div class="d-flex pt-3 border-top">
                             <button class="btn btn-outline-primary" type="button" id="btnNuevaBusqueda">
                                 <i class="fas fa-search me-1"></i>Nueva Búsqueda
                             </button>
@@ -113,317 +114,3 @@
         </div>
     </div>
 </div>
-
-<style>
-/* ============================================
-   MODAL HEADER - GRADIENTE AZUL
-   ============================================ */
-#modalEstadoClienteHeader {
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-    border-bottom: none;
-    color: white;
-}
-
-#modalEstadoClienteHeader .modal-title {
-    font-weight: 600;
-}
-
-/* ============================================
-   OBSERVACIONES - BANNER DE ALERTA
-   ============================================ */
-.cliente-observaciones {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-    border-radius: 10px;
-    margin-bottom: 20px;
-    color: white;
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
-}
-
-.observaciones-icon {
-    font-size: 1.5rem;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
-}
-
-.observaciones-content {
-    flex: 1;
-}
-
-.observaciones-content strong {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* ============================================
-   CABECERA DEL CLIENTE
-   ============================================ */
-.cliente-header-card {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    margin-bottom: 16px;
-    border: 1px solid #e9ecef;
-}
-
-.cliente-avatar {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
-    flex-shrink: 0;
-}
-
-.cliente-header-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.cliente-nombre {
-    margin: 0 0 8px 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #212529;
-    word-wrap: break-word;
-}
-
-.cliente-identificadores {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.cliente-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-.cliente-badge.codigo {
-    background: #e7f1ff;
-    color: #0d6efd;
-}
-
-.cliente-badge.cuit {
-    background: #f0f0f0;
-    color: #495057;
-}
-
-.cliente-badge i {
-    font-size: 0.75rem;
-}
-
-/* ============================================
-   SALDO DESTACADO
-   ============================================ */
-.cliente-saldo-card {
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 16px;
-    text-align: center;
-    border: 2px solid;
-}
-
-.cliente-saldo-card.positivo {
-    background: #fff5f5;
-    border-color: #dc3545;
-}
-
-.cliente-saldo-card.negativo {
-    background: #f0fdf4;
-    border-color: #198754;
-}
-
-.cliente-saldo-card.cero {
-    background: #f8f9fa;
-    border-color: #dee2e6;
-}
-
-.saldo-label {
-    font-size: 0.85rem;
-    color: #6c757d;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.saldo-valor {
-    font-size: 2rem;
-    font-weight: 700;
-    font-family: 'Courier New', monospace;
-}
-
-.cliente-saldo-card.positivo .saldo-valor {
-    color: #dc3545;
-}
-
-.cliente-saldo-card.negativo .saldo-valor {
-    color: #198754;
-}
-
-.cliente-saldo-card.cero .saldo-valor {
-    color: #6c757d;
-}
-
-/* ============================================
-   GRID DE INFORMACIÓN
-   ============================================ */
-.cliente-info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
-@media (max-width: 576px) {
-    .cliente-info-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.cliente-info-item {
-    display: flex;
-    gap: 14px;
-    padding: 16px;
-    background: white;
-    border-radius: 10px;
-    border: 1px solid #e9ecef;
-    transition: box-shadow 0.2s;
-}
-
-.cliente-info-item:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.info-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    flex-shrink: 0;
-}
-
-.info-icon.compra {
-    background: #e7f1ff;
-    color: #0d6efd;
-}
-
-.info-icon.pago {
-    background: #e8f5e9;
-    color: #198754;
-}
-
-.info-content {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
-
-.info-label {
-    font-size: 0.75rem;
-    color: #6c757d;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
-}
-
-.info-fecha {
-    font-weight: 600;
-    color: #212529;
-    font-size: 0.95rem;
-}
-
-.info-importe {
-    font-weight: 700;
-    color: #0d6efd;
-    font-family: 'Courier New', monospace;
-    font-size: 1rem;
-}
-
-/* ============================================
-   NOTA
-   ============================================ */
-.cliente-nota-card {
-    padding: 16px;
-    background: #fffbeb;
-    border-radius: 10px;
-    border: 1px solid #fde68a;
-    margin-bottom: 20px;
-}
-
-.cliente-nota-card.vacia {
-    display: none;
-}
-
-.nota-header {
-    font-size: 0.8rem;
-    color: #92400e;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
-}
-
-.nota-contenido {
-    color: #78350f;
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
-/* ============================================
-   ACCIONES
-   ============================================ */
-.cliente-acciones {
-    display: flex;
-    justify-content: flex-start;
-    gap: 10px;
-    padding-top: 10px;
-    border-top: 1px solid #e9ecef;
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (max-width: 576px) {
-    .cliente-header-card {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .cliente-identificadores {
-        justify-content: center;
-    }
-
-    .saldo-valor {
-        font-size: 1.5rem;
-    }
-
-    .cliente-acciones {
-        justify-content: center;
-    }
-}
-</style>
