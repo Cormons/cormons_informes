@@ -52,7 +52,7 @@
                 
                 if (loadingElement) loadingElement.classList.add('d-none');
                 
-                mostrarErrorBloqueante(err.message, 'https://cormons.app/');
+                mostrarErrorBloqueante(err.message);
                 
                 throw err;
             });

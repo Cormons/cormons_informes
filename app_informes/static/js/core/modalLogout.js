@@ -55,11 +55,11 @@ async function confirmarLogout() {
             },
             credentials: 'same-origin'
         });
-        window.location.href = 'https://cormons.app/';
-        
+        window.location.href = '/logout/';
+
     } catch (error) {
         console.error('❌ Error al cerrar sesión:', error);
-        window.location.href = 'https://cormons.app/';
+        window.location.href = '/logout/';
     }
 }
 

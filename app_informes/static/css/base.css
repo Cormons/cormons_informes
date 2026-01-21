@@ -1,0 +1,323 @@
+/* ============================================
+   BASE.CSS - Variables globales y layout
+   ============================================ */
+
+/* ============================================
+   VARIABLES GLOBALES
+   ============================================ */
+:root {
+    /* Colores por módulo */
+    --color-ventas: #0d6efd;
+    --color-ventas-dark: #0a58ca;
+    --color-compras: #198754;
+    --color-compras-dark: #146c43;
+    --color-finanzas: #ffc107;
+    --color-finanzas-dark: #ff9800;
+    --color-stock: #6f42c1;
+    --color-stock-dark: #5a32a3;
+
+    /* Colores semánticos */
+    --color-danger: #dc3545;
+    --color-danger-dark: #c82333;
+    --color-success: #198754;
+    --color-success-dark: #146c43;
+    --color-info: #3498db;
+    --color-warning-bg: #fffbeb;
+    --color-warning-border: #fde68a;
+    --color-warning-text: #92400e;
+    --color-warning-text-dark: #78350f;
+
+    /* Grises */
+    --color-gray-50: #f7f9fb;
+    --color-gray-100: #f8f9fa;
+    --color-gray-200: #e9ecef;
+    --color-gray-300: #dee2e6;
+    --color-gray-400: #ced4da;
+    --color-gray-500: #6c757d;
+    --color-gray-600: #495057;
+    --color-gray-700: #495057;
+    --color-gray-800: #343a40;
+    --color-gray-900: #212529;
+
+    /* Border radius */
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+    --radius-xl: 12px;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.15);
+    --shadow-hover: 0 4px 10px rgba(0,0,0,0.1);
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.25s ease;
+    --transition-slow: 0.4s ease;
+}
+
+/* ============================================
+   LAYOUT GLOBAL
+   ============================================ */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+.navbar {
+    height: 60px;
+}
+
+.navbar-brand {
+    flex: 1;
+    min-width: 0;
+}
+
+.navbar-brand p {
+    margin: 0;
+    line-height: 1.2;
+}
+
+.logout-button {
+    white-space: nowrap;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+footer {
+    font-size: 1rem;
+}
+
+footer .container {
+    min-height: auto;
+}
+
+footer img {
+    filter: brightness(1.1);
+}
+
+/* ============================================
+   MODULE TABS
+   ============================================ */
+.module-tab {
+    padding: 12px 8px;
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.module-tab:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.module-tab.active {
+    font-weight: bold;
+    box-shadow: var(--shadow-lg);
+}
+
+.module-tab.active i {
+    color: inherit;
+}
+
+.module-tab i {
+    font-size: 1.5rem;
+}
+
+/* Estados por módulo (habilitado) */
+.module-ventas-enabled {
+    border-color: var(--color-ventas) !important;
+    color: var(--color-ventas) !important;
+    background: rgba(13,110,253,0.04);
+    font-weight: 600;
+}
+
+.module-compras-enabled {
+    border-color: var(--color-compras) !important;
+    color: var(--color-compras) !important;
+    background: rgba(25,135,84,0.04);
+    font-weight: 600;
+}
+
+.module-finanzas-enabled {
+    border-color: var(--color-finanzas) !important;
+    color: #856404 !important;
+    background: rgba(255,193,7,0.04);
+    font-weight: 600;
+}
+
+.module-stock-enabled {
+    border-color: var(--color-stock) !important;
+    color: var(--color-stock) !important;
+    background: rgba(111,66,193,0.04);
+    font-weight: 600;
+}
+
+/* Estados por módulo (activo) */
+.module-tab.active.module-ventas-enabled {
+    background-color: var(--color-ventas) !important;
+    color: white !important;
+    border-color: var(--color-ventas) !important;
+}
+
+.module-tab.active.module-compras-enabled {
+    background-color: var(--color-compras) !important;
+    color: white !important;
+    border-color: var(--color-compras) !important;
+}
+
+.module-tab.active.module-finanzas-enabled {
+    background-color: var(--color-finanzas) !important;
+    color: #000 !important;
+    border-color: var(--color-finanzas) !important;
+}
+
+.module-tab.active.module-stock-enabled {
+    background-color: var(--color-stock) !important;
+    color: white !important;
+    border-color: var(--color-stock) !important;
+}
+
+/* ============================================
+   HOVER CARDS
+   ============================================ */
+.hover-card {
+    cursor: pointer;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.hover-card:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ============================================
+   MODAL Z-INDEX (para modales apilados)
+   ============================================ */
+#modalAlerta {
+    z-index: 1070 !important;
+}
+
+.modal-backdrop.modal-alerta-backdrop {
+    z-index: 1065 !important;
+}
+
+#modalErrorBloqueante {
+    z-index: 1080 !important;
+}
+
+.modal-backdrop.modal-error-backdrop {
+    z-index: 1075 !important;
+}
+
+/* ============================================
+   RESPONSIVE - MÓVILES
+   ============================================ */
+@media (max-width: 768px) {
+    .navbar {
+        height: 50px;
+        padding: 5px 10px;
+    }
+
+    .navbar-brand {
+        font-size: 0.85rem;
+    }
+
+    .logout-button {
+        padding: 6px 12px !important;
+        font-size: 0.85rem;
+    }
+
+    .logout-button span {
+        display: none !important;
+    }
+
+    .logout-button i {
+        margin: 0 !important;
+    }
+
+    footer {
+        padding: 8px 0;
+        font-size: 0.75rem;
+    }
+
+    footer .container {
+        gap: 12px !important;
+        padding: 0 10px;
+    }
+
+    footer img[alt="Isologo Cormons"] {
+        width: 30px !important;
+        height: 30px !important;
+        margin-right: 5px !important;
+    }
+
+    footer img[alt="Logo WhatsApp"] {
+        width: 18px !important;
+        height: 18px !important;
+        margin-right: 4px !important;
+    }
+
+    .module-tab i {
+        font-size: 1.2rem;
+    }
+
+    .module-tab small {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 0.75rem;
+    }
+
+    footer {
+        padding: 6px 0;
+        font-size: 0.7rem;
+    }
+
+    footer .container {
+        gap: 8px !important;
+    }
+
+    footer img[alt="Isologo Cormons"] {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    footer img[alt="Logo WhatsApp"] {
+        width: 16px !important;
+        height: 16px !important;
+    }
+}
+
+@media (max-width: 324px) {
+    .navbar {
+        height: 45px;
+    }
+
+    .navbar-brand {
+        font-size: 0.65rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .logout-button {
+        padding: 4px 8px !important;
+        font-size: 0.75rem;
+        min-width: 32px;
+    }
+
+    .logout-button i {
+        font-size: 0.9rem;
+    }
+}

@@ -76,19 +76,21 @@
         document.getElementById('clienteRazonSocial').textContent = cliente.razonSocial || '-';
         document.getElementById('clienteCuit').textContent = cliente.cuit || '-';
 
-        // Saldo con color
+        // Saldo con color y clase en el card
         const saldo = parseFloat(cliente.saldoCtaCte) || 0;
         const saldoEl = document.getElementById('clienteSaldo');
+        const saldoCard = document.getElementById('clienteSaldoCard');
+
         saldoEl.textContent = formatearMoneda(saldo);
 
-        // Aplicar color según saldo
-        saldoEl.classList.remove('text-danger', 'text-success', 'text-muted');
+        // Aplicar clase al card según saldo
+        saldoCard.classList.remove('positivo', 'negativo', 'cero');
         if (saldo > 0) {
-            saldoEl.classList.add('text-danger'); // Cliente debe (rojo)
+            saldoCard.classList.add('positivo'); // Cliente debe (rojo)
         } else if (saldo < 0) {
-            saldoEl.classList.add('text-success'); // A favor del cliente (verde)
+            saldoCard.classList.add('negativo'); // A favor del cliente (verde)
         } else {
-            saldoEl.classList.add('text-muted'); // Cero (gris)
+            saldoCard.classList.add('cero'); // Cero (gris)
         }
 
         // Movimientos
@@ -100,8 +102,15 @@
 
         document.getElementById('clienteFechaPago').textContent = cliente.fechaUltimoPago || '-';
 
-        // Nota
-        document.getElementById('clienteNota').textContent = cliente.nota || '-';
+        // Nota (ocultar si está vacía)
+        const notaCard = document.getElementById('clienteNotaCard');
+        const notaEl = document.getElementById('clienteNota');
+        if (cliente.nota && cliente.nota.trim() !== '' && cliente.nota !== '-') {
+            notaEl.textContent = cliente.nota;
+            notaCard.classList.remove('empty');
+        } else {
+            notaCard.classList.add('empty');
+        }
     }
 
     // Inicializar al cargar DOM
