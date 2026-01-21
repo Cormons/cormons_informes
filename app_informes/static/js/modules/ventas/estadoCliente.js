@@ -83,14 +83,23 @@
 
         saldoEl.textContent = formatearMoneda(saldo);
 
-        // Aplicar clase al card según saldo
+        // Aplicar clase al card y badge según saldo
+        const badgeSaldo = document.getElementById('badgeSaldo');
         saldoCard.classList.remove('positivo', 'negativo', 'cero');
+        badgeSaldo.classList.remove('deudor', 'acreedor', 'sin-saldo');
+
         if (saldo > 0) {
-            saldoCard.classList.add('positivo'); // Cliente debe (rojo)
+            saldoCard.classList.add('positivo');
+            badgeSaldo.classList.add('deudor');
+            badgeSaldo.textContent = 'Saldo deudor';
         } else if (saldo < 0) {
-            saldoCard.classList.add('negativo'); // A favor del cliente (verde)
+            saldoCard.classList.add('negativo');
+            badgeSaldo.classList.add('acreedor');
+            badgeSaldo.textContent = 'Saldo acreedor';
         } else {
-            saldoCard.classList.add('cero'); // Cero (gris)
+            saldoCard.classList.add('cero');
+            badgeSaldo.classList.add('sin-saldo');
+            badgeSaldo.textContent = 'Sin saldo en cuenta';
         }
 
         // Movimientos

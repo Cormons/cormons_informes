@@ -205,6 +205,33 @@
     color: var(--color-gray-500);
 }
 
+/* Badge de estado del saldo */
+.badge-saldo {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-saldo.deudor {
+    background: var(--color-danger);
+    color: white;
+}
+
+.badge-saldo.acreedor {
+    background: var(--color-success);
+    color: white;
+}
+
+.badge-saldo.sin-saldo {
+    background: var(--color-gray-800);
+    color: white;
+}
+
 /* ============================================
    ALERT BANNER (observaciones, alertas destacadas)
    ============================================ */
