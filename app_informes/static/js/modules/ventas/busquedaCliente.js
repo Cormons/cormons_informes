@@ -161,74 +161,76 @@
     /**
      * Buscar cliente por código
      */
-    function buscarPorCodigo(codigo) {
-        return fetch(`/ventas/buscar-codigo/?codigo=${encodeURIComponent(codigo)}`)
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => {
-                        throw new Error(err.error || 'Error en la búsqueda');
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('📦 Datos cliente recibidos:', data);
+    async function buscarPorCodigo(codigo) {
+        const response = await fetch(`/ventas/buscar-codigo/?codigo=${encodeURIComponent(codigo)}`);
 
-                if (data.CLIENTE) {
-                    // Cliente encontrado, ejecutar callback
-                    if (onClienteSeleccionado) {
-                        onClienteSeleccionado(data.CLIENTE);
-                    }
-                } else {
-                    // No se encontró cliente - mensaje de VFP
-                    mostrarSeccion('busqueda');
-                    const mensaje = data.Mensaje || 'No se encontró el cliente';
-                    // Modal azul informativo para estado=true sin datos
-                    if (window.mostrarAlerta) {
-                        window.mostrarAlerta(mensaje, 'info-modal');
-                    }
-                }
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.error || 'Error en la búsqueda');
+        }
 
-                return data;
-            });
+        const data = await response.json();
+        console.log('📦 Datos cliente recibidos:', data);
+
+        if (data.CLIENTE) {
+            // Si hay mensaje de VFP, mostrarlo primero y esperar
+            if (data.Mensaje && data.Mensaje.trim() !== '' && window.mostrarAlerta) {
+                await window.mostrarAlerta(data.Mensaje, 'info-modal');
+            }
+
+            // Luego mostrar el cliente
+            if (onClienteSeleccionado) {
+                onClienteSeleccionado(data.CLIENTE);
+            }
+        } else {
+            // No se encontró cliente - mensaje de VFP
+            mostrarSeccion('busqueda');
+            const mensaje = data.Mensaje || 'No se encontró el cliente';
+            if (window.mostrarAlerta) {
+                window.mostrarAlerta(mensaje, 'info-modal');
+            }
+        }
+
+        return data;
     }
 
     /**
      * Buscar clientes por descripción
      */
-    function buscarPorDescripcion(descripcion) {
-        return fetch(`/ventas/buscar-descripcion/?descripcion=${encodeURIComponent(descripcion)}`)
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => {
-                        throw new Error(err.error || 'Error en la búsqueda');
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('📦 Datos clientes recibidos:', data);
+    async function buscarPorDescripcion(descripcion) {
+        const response = await fetch(`/ventas/buscar-descripcion/?descripcion=${encodeURIComponent(descripcion)}`);
 
-                if (data.CLIENTES && data.CLIENTES.length > 0) {
-                    if (data.CLIENTES.length === 1) {
-                        // Un solo resultado, seleccionar directamente
-                        seleccionarClienteDeLista(data.CLIENTES[0].codigo);
-                    } else {
-                        // Múltiples resultados, mostrar lista
-                        mostrarListaClientes(data.CLIENTES);
-                    }
-                } else {
-                    // No se encontraron clientes - mensaje de VFP
-                    mostrarSeccion('busqueda');
-                    const mensaje = data.Mensaje || 'No se encontraron clientes';
-                    // Modal azul informativo para estado=true sin datos
-                    if (window.mostrarAlerta) {
-                        window.mostrarAlerta(mensaje, 'info-modal');
-                    }
-                }
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.error || 'Error en la búsqueda');
+        }
 
-                return data;
-            });
+        const data = await response.json();
+        console.log('📦 Datos clientes recibidos:', data);
+
+        if (data.CLIENTES && data.CLIENTES.length > 0) {
+            // Si hay mensaje de VFP, mostrarlo primero y esperar
+            if (data.Mensaje && data.Mensaje.trim() !== '' && window.mostrarAlerta) {
+                await window.mostrarAlerta(data.Mensaje, 'info-modal');
+            }
+
+            if (data.CLIENTES.length === 1) {
+                // Un solo resultado, seleccionar directamente
+                seleccionarClienteDeLista(data.CLIENTES[0].codigo);
+            } else {
+                // Múltiples resultados, mostrar lista
+                mostrarListaClientes(data.CLIENTES);
+            }
+        } else {
+            // No se encontraron clientes - mensaje de VFP
+            mostrarSeccion('busqueda');
+            const mensaje = data.Mensaje || 'No se encontraron clientes';
+            if (window.mostrarAlerta) {
+                window.mostrarAlerta(mensaje, 'info-modal');
+            }
+        }
+
+        return data;
     }
 
     /**
