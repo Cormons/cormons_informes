@@ -61,51 +61,43 @@
     
     /**
      * Mostrar error bloqueante (sesión expirada, errores críticos)
+     * Siempre redirige a logout por defecto
      */
-    function mostrarErrorBloqueante(mensaje, redirectUrl) {
+    function mostrarErrorBloqueante(mensaje, redirectUrl = '/logout/') {
         console.log('🚫 Mostrando error bloqueante:', mensaje);
-        
-        // Limpiar backdrops antes de mostrar
-        limpiarBackdrops();
-        
-        // Ocultar otros modales abiertos
-        try {
-            if (modalChequesCartera) {
-                modalChequesCartera.hide();
-            }
-            if (modalAlerta) {
-                modalAlerta.hide();
-            }
-        } catch (e) {
-            console.warn('No se pudieron ocultar otros modales:', e);
-        }
 
         const mensajeEl = document.getElementById('errorBloqueanteTexto');
         const btnRedirect = document.getElementById('btn-redirect-bloqueante');
-        
+
         if (mensajeEl) {
             mensajeEl.textContent = mensaje;
         }
-        
+
         if (btnRedirect) {
             btnRedirect.onclick = function() {
-                if (redirectUrl) {
-                    window.location.href = redirectUrl;
-                } else {
-                    if (modalErrorBloqueante) {
-                        modalErrorBloqueante.hide();
-                    }
-                }
+                window.location.href = redirectUrl;
             };
         }
-        
+
         if (modalErrorBloqueante) {
+            const modalElement = document.getElementById('modalErrorBloqueante');
+
+            // Marcar el backdrop del modal de error para que tenga z-index más alto
+            const onShown = () => {
+                modalElement.removeEventListener('shown.bs.modal', onShown);
+                // Buscar el backdrop más reciente y marcarlo
+                const backdrops = document.querySelectorAll('.modal-backdrop');
+                if (backdrops.length > 0) {
+                    const lastBackdrop = backdrops[backdrops.length - 1];
+                    lastBackdrop.classList.add('modal-error-backdrop');
+                }
+            };
+            modalElement.addEventListener('shown.bs.modal', onShown);
+
             modalErrorBloqueante.show();
         } else {
             alert(mensaje);
-            if (redirectUrl) {
-                window.location.href = redirectUrl;
-            }
+            window.location.href = redirectUrl;
         }
     }
 
@@ -140,47 +132,55 @@
      */
     function mostrarAlerta(mensaje, tipo = 'info-modal') {
         if (!mensaje || mensaje.trim() === '') return Promise.resolve();
-        
+
         return new Promise((resolve) => {
             const configs = {
-                'info-modal': { 
-                    headerClass: 'bg-info text-white', 
-                    titulo: 'Información', 
+                'info-modal': {
+                    headerClass: 'bg-info text-white',
+                    titulo: 'Información',
                     icono: 'fa-info-circle text-info',
                     btnClass: 'btn-primary'
                 },
-                'error-modal': { 
-                    headerClass: 'bg-danger text-white', 
-                    titulo: 'Error', 
+                'error-modal': {
+                    headerClass: 'bg-danger text-white',
+                    titulo: 'Error',
                     icono: 'fa-exclamation-circle text-danger',
                     btnClass: 'btn-danger'
                 }
             };
             const config = configs[tipo];
-            
+
             const header = document.getElementById('modal-alerta-header');
             const titulo = document.getElementById('modal-alerta-titulo');
             const icono = document.getElementById('modal-alerta-icono');
             const mensajeEl = document.getElementById('modal-alerta-mensaje');
-            
+
             if (header) header.className = `modal-header ${config.headerClass}`;
             if (titulo) titulo.innerHTML = `<i class="fas ${config.icono.split(' ')[0]} me-2"></i>${config.titulo}`;
             if (icono) icono.className = `fas ${config.icono}`;
             if (mensajeEl) mensajeEl.textContent = mensaje;
-            
-            // Limpiar backdrops antes de mostrar
-            limpiarBackdrops();
-            
+
             // Resolver la Promise cuando el usuario cierra el modal
             const modalElement = document.getElementById('modalAlerta');
             const onHidden = () => {
                 modalElement.removeEventListener('hidden.bs.modal', onHidden);
-                limpiarBackdrops(); // Limpiar al cerrar también
                 resolve();
             };
             modalElement.addEventListener('hidden.bs.modal', onHidden);
-            
-            // Esperar a que el DOM se actualice antes de mostrar
+
+            // Marcar el backdrop del modal de alerta para que tenga z-index más alto
+            const onShown = () => {
+                modalElement.removeEventListener('shown.bs.modal', onShown);
+                // Buscar el backdrop más reciente y marcarlo
+                const backdrops = document.querySelectorAll('.modal-backdrop');
+                if (backdrops.length > 0) {
+                    const lastBackdrop = backdrops[backdrops.length - 1];
+                    lastBackdrop.classList.add('modal-alerta-backdrop');
+                }
+            };
+            modalElement.addEventListener('shown.bs.modal', onShown);
+
+            // Mostrar el modal (sin limpiar backdrops para no afectar otros modales abiertos)
             setTimeout(() => {
                 if (modalAlerta) {
                     modalAlerta.show();
@@ -189,8 +189,8 @@
                     alert(mensaje);
                     resolve();
                 }
-            }, 100);
-            
+            }, 50);
+
             console.log(`ℹ️ Alerta mostrada: ${mensaje.substring(0, 50)}...`);
         });
     }
@@ -254,7 +254,7 @@
                     
                     // Mostrar error bloqueante después de cerrar
                     setTimeout(() => {
-                        mostrarErrorBloqueante(err.message, 'https://cormons.app/');
+                        mostrarErrorBloqueante(err.message);
                     }, 300);
                 });
         } else {

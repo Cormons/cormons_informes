@@ -1,0 +1,59 @@
+<!-- Modal: Cheques en Cartera -->
+<div class="modal fade" id="modalChequesCartera" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header modal-header-gradient finanzas">
+                <h5 class="modal-title">
+                    <i class="fas fa-money-check-alt me-2"></i>Cheques en Cartera
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Loading -->
+                <div id="chequesLoading" class="text-center py-5">
+                    <div class="spinner-border text-warning" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Consultando cheques...</p>
+                </div>
+                <!-- Error -->
+                <div id="chequesError" class="alert alert-danger d-none">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span id="chequesErrorMensaje"></span>
+                </div>
+                <!-- Resultados -->
+                <div id="chequesResultados" class="d-none">
+                    <div class="select-all-container mb-3">
+                        <label class="form-check-label">
+                            <input type="checkbox" id="checkboxSeleccionarTodos" class="form-check-input me-2">
+                            <strong>Seleccionar todos</strong>
+                        </label>
+                    </div>
+                    <div id="chequesListaExpandible"></div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between align-items-center flex-wrap gap-3 bg-light border-top">
+                <div class="footer-totals">
+                    <div class="total-row">
+                        <span class="total-label">Total:</span>
+                        <span id="totalCantidad" class="total-value">0 cheques</span>
+                        <span class="total-separator">|</span>
+                        <span id="totalImporte" class="total-value">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span class="total-label">Seleccionados:</span>
+                        <span id="seleccionadosCantidad" class="total-value highlight">0 cheques</span>
+                        <span class="total-separator">|</span>
+                        <span id="seleccionadosImporte" class="total-value highlight">$0.00</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-success" id="btnCopiarSeleccionados" disabled>
+                        <i class="fas fa-copy me-1"></i>Copiar seleccionados
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+<!-- Modal: Estado de Cliente -->
+<div class="modal fade" id="modalEstadoCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header modal-header-gradient ventas">
+                <h5 class="modal-title">
+                    <i class="fas fa-user-check me-2"></i>Estado de Cliente
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Componente reutilizable: Búsqueda de Cliente -->
+                {% include 'app_informes/modal_busqueda_cliente.html' %}
+
+                <!-- Sección de Información del Cliente -->
+                <div id="seccionInformacion" class="d-none">
+                    <!-- Loading información -->
+                    <div id="loadingInformacion" class="text-center py-5 d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-3 text-muted">Cargando información del cliente...</p>
+                    </div>
+
+                    <!-- Información del cliente -->
+                    <div id="infoCliente" class="d-none">
+                        <!-- Observaciones (si existen) -->
+                        <div id="observacionesContainer" class="d-none mb-3">
+                            <div class="alert-banner danger">
+                                <div class="icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="content">
+                                    <strong>Observaciones</strong>
+                                    <div id="observacionesTexto"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cabecera del cliente -->
+                        <div class="info-card-header mb-3">
+                            <div class="icon-box md primary">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="flex-grow-1" style="min-width: 0;">
+                                <h4 id="clienteRazonSocial" class="mb-2 fw-bold" style="word-wrap: break-word;">-</h4>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <span class="badge-custom primary">
+                                        <i class="fas fa-hashtag"></i>
+                                        <span id="clienteCodigo">-</span>
+                                    </span>
+                                    <span class="badge-custom neutral">
+                                        <i class="fas fa-id-card"></i>
+                                        <span id="clienteCuit">-</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Saldo destacado -->
+                        <div class="saldo-card mb-3" id="clienteSaldoCard">
+                            <div class="label">
+                                <i class="fas fa-wallet me-2"></i>Saldo Cuenta Corriente
+                            </div>
+                            <div class="value" id="clienteSaldo">-</div>
+                            <span class="badge-saldo" id="badgeSaldo"></span>
+                        </div>
+
+                        <!-- Grid de información -->
+                        <div class="info-grid mb-3">
+                            <!-- Última compra -->
+                            <div class="info-card d-flex gap-3">
+                                <div class="icon-box sm primary-light">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <span class="label-uppercase mb-1">Última Compra</span>
+                                    <span class="fw-semibold" id="clienteFechaCompra">-</span>
+                                    <span class="fw-bold text-primary mono" id="clienteImporteCompra">-</span>
+                                </div>
+                            </div>
+
+                            <!-- Último pago -->
+                            <div class="info-card d-flex gap-3">
+                                <div class="icon-box sm success-light">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <span class="label-uppercase mb-1">Último Pago</span>
+                                    <span class="fw-semibold" id="clienteFechaPago">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nota -->
+                        <div class="note-card mb-3" id="clienteNotaCard">
+                            <div class="header">
+                                <i class="fas fa-sticky-note me-2"></i>Nota
+                            </div>
+                            <div class="content" id="clienteNota">-</div>
+                        </div>
+
+                        <!-- Acciones -->
+                        <div class="d-flex pt-3 border-top">
+                            <button class="btn btn-outline-primary" type="button" id="btnNuevaBusqueda">
+                                <i class="fas fa-search me-1"></i>Nueva Búsqueda
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

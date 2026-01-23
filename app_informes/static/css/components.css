@@ -1,0 +1,532 @@
+/* ============================================
+   COMPONENTS.CSS - Componentes reutilizables
+   ============================================ */
+
+/* ============================================
+   MODAL HEADERS CON GRADIENTE
+   ============================================ */
+.modal-header-gradient {
+    border-bottom: none;
+    color: white;
+}
+
+.modal-header-gradient .modal-title {
+    font-weight: 600;
+}
+
+.modal-header-gradient .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+.modal-header-gradient.ventas {
+    background: linear-gradient(135deg, var(--color-ventas) 0%, var(--color-ventas-dark) 100%);
+}
+
+.modal-header-gradient.compras {
+    background: linear-gradient(135deg, var(--color-compras) 0%, var(--color-compras-dark) 100%);
+}
+
+.modal-header-gradient.finanzas {
+    background: linear-gradient(135deg, var(--color-finanzas) 0%, var(--color-finanzas-dark) 100%);
+    color: #000;
+}
+
+.modal-header-gradient.finanzas .btn-close {
+    filter: none;
+}
+
+.modal-header-gradient.stock {
+    background: linear-gradient(135deg, var(--color-stock) 0%, var(--color-stock-dark) 100%);
+}
+
+.modal-header-gradient.danger {
+    background: linear-gradient(135deg, var(--color-danger) 0%, var(--color-danger-dark) 100%);
+}
+
+/* ============================================
+   INFO CARDS
+   ============================================ */
+.info-card {
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-gray-200);
+    background: white;
+    transition: box-shadow var(--transition-fast);
+}
+
+.info-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.info-card-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: var(--color-gray-100);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-gray-200);
+}
+
+/* ============================================
+   ICON BOX (avatares, iconos en cards)
+   ============================================ */
+.icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    flex-shrink: 0;
+}
+
+.icon-box.sm {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+}
+
+.icon-box.md {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+}
+
+/* Variantes de color */
+.icon-box.primary {
+    background: linear-gradient(135deg, var(--color-ventas) 0%, var(--color-ventas-dark) 100%);
+    color: white;
+}
+
+.icon-box.primary-light {
+    background: #e7f1ff;
+    color: var(--color-ventas);
+}
+
+.icon-box.success-light {
+    background: #e8f5e9;
+    color: var(--color-success);
+}
+
+.icon-box.warning-light {
+    background: #fff8e1;
+    color: var(--color-finanzas-dark);
+}
+
+.icon-box.info-light {
+    background: #e3f2fd;
+    color: var(--color-info);
+}
+
+/* ============================================
+   BADGES CUSTOM
+   ============================================ */
+.badge-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.badge-custom i {
+    font-size: 0.75rem;
+}
+
+.badge-custom.primary {
+    background: #e7f1ff;
+    color: var(--color-ventas);
+}
+
+.badge-custom.success {
+    background: #e8f5e9;
+    color: var(--color-success);
+}
+
+.badge-custom.warning {
+    background: #fff8e1;
+    color: var(--color-finanzas-dark);
+}
+
+.badge-custom.neutral {
+    background: #f0f0f0;
+    color: var(--color-gray-700);
+}
+
+/* ============================================
+   SALDO CARD (con estados positivo/negativo/cero)
+   ============================================ */
+.saldo-card {
+    padding: 20px;
+    border-radius: var(--radius-xl);
+    text-align: center;
+    border: 2px solid;
+}
+
+.saldo-card .label {
+    font-size: 0.85rem;
+    color: var(--color-gray-500);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.saldo-card .value {
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+.saldo-card.positivo {
+    background: #fff5f5;
+    border-color: var(--color-danger);
+}
+
+.saldo-card.positivo .value {
+    color: var(--color-danger);
+}
+
+.saldo-card.negativo {
+    background: #f0fdf4;
+    border-color: var(--color-success);
+}
+
+.saldo-card.negativo .value {
+    color: var(--color-success);
+}
+
+.saldo-card.cero {
+    background: var(--color-gray-100);
+    border-color: var(--color-gray-300);
+}
+
+.saldo-card.cero .value {
+    color: var(--color-gray-500);
+}
+
+/* Badge de estado del saldo */
+.badge-saldo {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-saldo.deudor {
+    background: var(--color-danger);
+    color: white;
+}
+
+.badge-saldo.acreedor {
+    background: var(--color-success);
+    color: white;
+}
+
+.badge-saldo.sin-saldo {
+    background: var(--color-gray-800);
+    color: white;
+}
+
+/* ============================================
+   ALERT BANNER (observaciones, alertas destacadas)
+   ============================================ */
+.alert-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 16px 20px;
+    border-radius: var(--radius-lg);
+    color: white;
+    box-shadow: var(--shadow-lg);
+}
+
+.alert-banner.danger {
+    background: linear-gradient(135deg, var(--color-danger) 0%, var(--color-danger-dark) 100%);
+}
+
+.alert-banner.warning {
+    background: linear-gradient(135deg, var(--color-finanzas) 0%, var(--color-finanzas-dark) 100%);
+    color: #000;
+}
+
+.alert-banner .icon {
+    font-size: 1.5rem;
+    animation: pulse 2s infinite;
+}
+
+.alert-banner .content {
+    flex: 1;
+}
+
+.alert-banner .content strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* ============================================
+   NOTE CARD (notas, observaciones secundarias)
+   ============================================ */
+.note-card {
+    padding: 16px;
+    background: var(--color-warning-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-warning-border);
+}
+
+.note-card.empty {
+    display: none;
+}
+
+.note-card .header {
+    font-size: 0.8rem;
+    color: var(--color-warning-text);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.note-card .content {
+    color: var(--color-warning-text-dark);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* ============================================
+   GRID LAYOUTS
+   ============================================ */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 576px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   EXPANDABLE ROW (filas expandibles genéricas)
+   ============================================ */
+.expandable-row {
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+    margin-bottom: 12px;
+    background: var(--color-gray-50);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+}
+
+.expandable-row:hover {
+    background: white;
+    box-shadow: var(--shadow-hover);
+    border-color: var(--color-info);
+}
+
+.expandable-row .row-main {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.expandable-row .row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.expandable-row .expand-icon {
+    color: var(--color-gray-500);
+    transition: transform 0.3s ease, color 0.3s;
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.expandable-row .expand-icon.expanded {
+    transform: rotate(90deg);
+    color: var(--color-info);
+}
+
+.expandable-row .details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-slow);
+    background: white;
+    border-radius: var(--radius-sm);
+}
+
+.expandable-row .details.expanded {
+    max-height: 250px;
+    padding: 16px;
+    margin-top: 12px;
+    border: 1px solid var(--color-gray-200);
+}
+
+.expandable-row .detail-item {
+    display: flex;
+    padding: 8px 0;
+    gap: 12px;
+    align-items: baseline;
+    border-bottom: 1px solid var(--color-gray-100);
+}
+
+.expandable-row .detail-item:last-of-type {
+    border-bottom: none;
+}
+
+.expandable-row .detail-label {
+    font-weight: 600;
+    min-width: 110px;
+    color: var(--color-gray-500);
+    flex-shrink: 0;
+    font-size: 0.9rem;
+}
+
+.expandable-row .detail-label::after {
+    content: ":";
+}
+
+.expandable-row .detail-value {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    color: var(--color-gray-900);
+    font-family: 'Courier New', monospace;
+}
+
+/* ============================================
+   IMPORTE HIGHLIGHT (importes destacados)
+   ============================================ */
+.importe-highlight {
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    white-space: nowrap;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+}
+
+.importe-highlight.success {
+    color: var(--color-success);
+    background: #e8f5e9;
+}
+
+.importe-highlight.primary {
+    color: var(--color-ventas);
+    background: #e7f1ff;
+}
+
+/* ============================================
+   CHECKBOX CUSTOM
+   ============================================ */
+.checkbox-custom {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+    accent-color: var(--color-info);
+}
+
+/* ============================================
+   SELECCIONAR TODOS CONTAINER
+   ============================================ */
+.select-all-container {
+    padding: 10px 15px;
+    background-color: var(--color-gray-100);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-gray-300);
+}
+
+.select-all-container label {
+    cursor: pointer;
+    margin: 0;
+    user-select: none;
+}
+
+/* ============================================
+   FOOTER TOTALES (para modales con totales)
+   ============================================ */
+.footer-totals {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-totals .total-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-totals .total-label {
+    font-weight: 600;
+    color: var(--color-gray-700);
+    font-size: 0.9rem;
+}
+
+.footer-totals .total-value {
+    font-weight: 700;
+    color: var(--color-gray-900);
+    font-size: 1rem;
+}
+
+.footer-totals .total-value.highlight {
+    color: var(--color-info);
+}
+
+.footer-totals .total-separator {
+    color: var(--color-gray-400);
+    margin: 0 4px;
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+.label-uppercase {
+    font-size: 0.75rem;
+    color: var(--color-gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mono {
+    font-family: 'Courier New', monospace;
+}
+
+.text-truncate-wrap {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* ============================================
+   RESPONSIVE COMPONENTS
+   ============================================ */
+@media (max-width: 576px) {
+    .saldo-card .value {
+        font-size: 1.5rem;
+    }
+
+    .expandable-row {
+        padding: 16px 18px;
+    }
+
+    .expandable-row .detail-label {
+        min-width: 95px;
+        font-size: 0.85rem;
+    }
+}
