@@ -143,6 +143,11 @@
         let promesaBusqueda;
 
         if (tipoBusquedaActual === 'codigo') {
+            if (!/^\d+$/.test(input)) {
+                mostrarErrorBusqueda('El código debe ser numérico');
+                mostrarSeccion('busqueda');
+                return;
+            }
             promesaBusqueda = buscarPorCodigo(input);
         } else {
             promesaBusqueda = buscarPorDescripcion(input);

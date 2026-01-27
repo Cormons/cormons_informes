@@ -80,7 +80,10 @@ def buscarClienteCodigo_view(request):
     
     if not codigo:
         return JsonResponse({"error": "Debe ingresar un código para buscar"}, status=400)
-    
+
+    if not codigo.isdigit():
+        return JsonResponse({"error": "El código debe ser numérico"}, status=400)
+
     # 3) Consultar VFP
     respuesta_vfp = comando_clienteCodigo(token, usuario, request, codigo)
     

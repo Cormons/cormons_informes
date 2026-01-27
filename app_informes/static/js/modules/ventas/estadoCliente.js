@@ -105,9 +105,9 @@
         // Movimientos
         document.getElementById('clienteFechaCompra').textContent = cliente.fechaUltimaCompra || '-';
 
-        const importeCompra = parseFloat(cliente.importeUltimaCompra) || 0;
-        document.getElementById('clienteImporteCompra').textContent =
-            importeCompra ? formatearMoneda(importeCompra) : '-';
+        const mora = parseInt(cliente.mora) || 0;
+        document.getElementById('clienteMora').textContent =
+            mora ? `${mora} días` : '-';
 
         document.getElementById('clienteFechaPago').textContent = cliente.fechaUltimoPago || '-';
 

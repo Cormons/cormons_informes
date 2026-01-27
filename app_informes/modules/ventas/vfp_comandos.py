@@ -63,11 +63,11 @@ def comando_clienteCodigo(token, usuario, request, codigo_cliente):
         dict: Respuesta de VFP con información completa del cliente o error
     """
     mensaje = {
-        "Comando": "clienteCodigo",  # ← Cambio aquí
-        "Token": token,              # ← Cambio aquí
+        "Comando": "clientecodigoctacte",
+        "Token": token,
         "Vista": "INFORMES",
         "UsrActivo": usuario,
-        "codigoCliente": codigo_cliente
+        "codigoCliente": int(codigo_cliente)
     }
     
     r = enviar_consulta_tcp(mensaje, request=request)
