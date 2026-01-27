@@ -39,24 +39,21 @@ def buscarClienteDescripcion_view(request):
     # 5) VFP devolvió estado=False
     estado_vfp = respuesta_vfp.get("estado")
     if estado_vfp is False or estado_vfp == "False":
-        mensaje = respuesta_vfp.get("mensaje", "Error al buscar clientes")
-        return JsonResponse({"error": mensaje}, status=400)
-    
+        return JsonResponse({"error": respuesta_vfp.get("mensaje", "")}, status=400)
+
     # 6) Procesar respuesta
     # Puede venir CLIENTE (singular) o CLIENTES (plural)
     cliente_singular = respuesta_vfp.get("CLIENTE")
     clientes_plural = respuesta_vfp.get("CLIENTES", [])
-    
+
     # Si viene un solo cliente, normalizarlo como lista de 1 elemento
     if cliente_singular and not clientes_plural:
         clientes_plural = [cliente_singular]
-    
-    mensaje = respuesta_vfp.get("mensaje", "")
-    
+
     # 7) Devolver datos (estado=true de VFP, aunque clientes esté vacío)
     return JsonResponse({
         "CLIENTES": clientes_plural,
-        "Mensaje": mensaje
+        "Mensaje": respuesta_vfp.get("mensaje", "")
     })
 
 
@@ -94,23 +91,21 @@ def buscarClienteCodigo_view(request):
     # 5) VFP devolvió estado=False
     estado_vfp = respuesta_vfp.get("estado")
     if estado_vfp is False or estado_vfp == "False":
-        mensaje = respuesta_vfp.get("mensaje", "Error al consultar cliente")
-        return JsonResponse({"error": mensaje}, status=400)
-    
+        return JsonResponse({"error": respuesta_vfp.get("mensaje", "")}, status=400)
+
     # 6) Obtener cliente y mensaje
     cliente = respuesta_vfp.get("CLIENTE")
-    mensaje = respuesta_vfp.get("mensaje", "")
-    
+
     # 7) Normalizar fechas si existe el cliente
     if cliente:
         if cliente.get("fechaUltimaCompra"):
             cliente["fechaUltimaCompra"] = formatear_fecha(cliente["fechaUltimaCompra"])
-        
+
         if cliente.get("fechaUltimoPago"):
             cliente["fechaUltimoPago"] = formatear_fecha(cliente["fechaUltimoPago"])
-    
-    # 8) Devolver datos (estado=true de VFP, aunque cliente sea None)
+
+    # 8) Devolver datos
     return JsonResponse({
         "CLIENTE": cliente,
-        "Mensaje": mensaje
+        "Mensaje": respuesta_vfp.get("mensaje", "")
     })

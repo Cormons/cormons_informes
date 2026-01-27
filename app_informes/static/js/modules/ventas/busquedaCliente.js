@@ -190,9 +190,8 @@
         } else {
             // No se encontró cliente - mensaje de VFP
             mostrarSeccion('busqueda');
-            const mensaje = data.Mensaje || 'No se encontró el cliente';
-            if (window.mostrarAlerta) {
-                window.mostrarAlerta(mensaje, 'info-modal');
+            if (data.Mensaje && window.mostrarAlerta) {
+                window.mostrarAlerta(data.Mensaje, 'info-modal');
             }
         }
 
@@ -229,9 +228,8 @@
         } else {
             // No se encontraron clientes - mensaje de VFP
             mostrarSeccion('busqueda');
-            const mensaje = data.Mensaje || 'No se encontraron clientes';
-            if (window.mostrarAlerta) {
-                window.mostrarAlerta(mensaje, 'info-modal');
+            if (data.Mensaje && window.mostrarAlerta) {
+                window.mostrarAlerta(data.Mensaje, 'info-modal');
             }
         }
 
