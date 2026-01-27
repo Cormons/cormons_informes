@@ -63,26 +63,40 @@ def comando_clienteCodigo(token, usuario, request, codigo_cliente):
         dict: Respuesta de VFP con información completa del cliente o error
     """
     mensaje = {
-        "Comando": "clienteCodigo",  # ← Cambio aquí
-        "Token": token,              # ← Cambio aquí
+        "Comando": "clientecodigoctacte",
+        "Token": token,
         "Vista": "INFORMES",
         "UsrActivo": usuario,
-        "codigoCliente": codigo_cliente
+        "codigoCliente": int(codigo_cliente)
     }
     
     r = enviar_consulta_tcp(mensaje, request=request)
-    
+
     # Sin respuesta del servidor
     if not r:
         return {
             "estado": False,
             "mensaje": "Sin respuesta del servidor",
-            "CLIENTE": None
         }
-    
-    # Devolver respuesta tal como viene de VFP
+
+    # VFP devuelve los datos del cliente en la raíz (no anidados)
+    # Mapear campos de VFP a los nombres que usa la app
+    cliente = None
+    if r.get("estado"):
+        cliente = {
+            "codigo": r.get("codigo"),
+            "descripcion": r.get("razonsocial", ""),
+            "cuit": r.get("cuit", ""),
+            "saldoCtaCte": r.get("saldoctacte", 0),
+            "observaciones": r.get("observaciones", ""),
+            "fechaUltimaCompra": r.get("fechaultimacompra", ""),
+            "fechaUltimoPago": r.get("fechaultimopago", ""),
+            "mora": r.get("mora", 0),
+            "nota": r.get("nota", ""),
+        }
+
     return {
         "estado": r.get("estado", False),
         "mensaje": r.get("mensaje", ""),
-        "CLIENTE": r.get("CLIENTE")
+        "CLIENTE": cliente
     }

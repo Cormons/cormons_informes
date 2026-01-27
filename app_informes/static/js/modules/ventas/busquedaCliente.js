@@ -143,6 +143,11 @@
         let promesaBusqueda;
 
         if (tipoBusquedaActual === 'codigo') {
+            if (!/^\d+$/.test(input)) {
+                mostrarErrorBusqueda('El código debe ser numérico');
+                mostrarSeccion('busqueda');
+                return;
+            }
             promesaBusqueda = buscarPorCodigo(input);
         } else {
             promesaBusqueda = buscarPorDescripcion(input);
@@ -185,9 +190,8 @@
         } else {
             // No se encontró cliente - mensaje de VFP
             mostrarSeccion('busqueda');
-            const mensaje = data.Mensaje || 'No se encontró el cliente';
-            if (window.mostrarAlerta) {
-                window.mostrarAlerta(mensaje, 'info-modal');
+            if (data.Mensaje && window.mostrarAlerta) {
+                window.mostrarAlerta(data.Mensaje, 'info-modal');
             }
         }
 
@@ -224,9 +228,8 @@
         } else {
             // No se encontraron clientes - mensaje de VFP
             mostrarSeccion('busqueda');
-            const mensaje = data.Mensaje || 'No se encontraron clientes';
-            if (window.mostrarAlerta) {
-                window.mostrarAlerta(mensaje, 'info-modal');
+            if (data.Mensaje && window.mostrarAlerta) {
+                window.mostrarAlerta(data.Mensaje, 'info-modal');
             }
         }
 
@@ -248,7 +251,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <span class="cliente-codigo">${cliente.codigo || '-'}</span>
-                        <span class="cliente-nombre ms-2">${cliente.razonSocial || 'Sin nombre'}</span>
+                        <span class="cliente-nombre ms-2">${cliente.descripcion || 'Sin nombre'}</span>
                     </div>
                     <i class="fas fa-chevron-right text-muted"></i>
                 </div>
@@ -260,6 +263,9 @@
 
             container.appendChild(item);
         });
+
+        const cantidadEl = document.getElementById('cantidadClientesEncontrados');
+        if (cantidadEl) cantidadEl.textContent = clientes.length;
 
         mostrarSeccion('lista');
     }

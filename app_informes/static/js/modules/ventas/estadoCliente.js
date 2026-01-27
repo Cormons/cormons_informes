@@ -73,7 +73,7 @@
 
         // Datos principales
         document.getElementById('clienteCodigo').textContent = cliente.codigo || '-';
-        document.getElementById('clienteRazonSocial').textContent = cliente.razonSocial || '-';
+        document.getElementById('clienteRazonSocial').textContent = cliente.descripcion || '-';
         document.getElementById('clienteCuit').textContent = cliente.cuit || '-';
 
         // Saldo con color y clase en el card
@@ -105,9 +105,9 @@
         // Movimientos
         document.getElementById('clienteFechaCompra').textContent = cliente.fechaUltimaCompra || '-';
 
-        const importeCompra = parseFloat(cliente.importeUltimaCompra) || 0;
-        document.getElementById('clienteImporteCompra').textContent =
-            importeCompra ? formatearMoneda(importeCompra) : '-';
+        const mora = parseInt(cliente.mora) || 0;
+        document.getElementById('clienteMora').textContent =
+            mora ? `${mora} días` : '-';
 
         document.getElementById('clienteFechaPago').textContent = cliente.fechaUltimoPago || '-';
 
