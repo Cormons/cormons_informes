@@ -73,7 +73,7 @@
 
         // Datos principales
         document.getElementById('clienteCodigo').textContent = cliente.codigo || '-';
-        document.getElementById('clienteRazonSocial').textContent = cliente.razonSocial || '-';
+        document.getElementById('clienteRazonSocial').textContent = cliente.descripcion || '-';
         document.getElementById('clienteCuit').textContent = cliente.cuit || '-';
 
         // Saldo con color y clase en el card

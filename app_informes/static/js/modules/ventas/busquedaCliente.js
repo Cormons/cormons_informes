@@ -248,7 +248,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <span class="cliente-codigo">${cliente.codigo || '-'}</span>
-                        <span class="cliente-nombre ms-2">${cliente.razonSocial || 'Sin nombre'}</span>
+                        <span class="cliente-nombre ms-2">${cliente.descripcion || 'Sin nombre'}</span>
                     </div>
                     <i class="fas fa-chevron-right text-muted"></i>
                 </div>
