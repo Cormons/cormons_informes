@@ -264,6 +264,9 @@
             container.appendChild(item);
         });
 
+        const cantidadEl = document.getElementById('cantidadClientesEncontrados');
+        if (cantidadEl) cantidadEl.textContent = clientes.length;
+
         mostrarSeccion('lista');
     }
 
