@@ -106,8 +106,7 @@
         document.getElementById('clienteFechaCompra').textContent = cliente.fechaUltimaCompra || '-';
 
         const mora = parseInt(cliente.mora) || 0;
-        document.getElementById('clienteMora').textContent =
-            mora ? `${mora} días` : '-';
+        document.getElementById('clienteMora').textContent = mora > 0 ? mora : 'Sin mora';
 
         document.getElementById('clienteFechaPago').textContent = cliente.fechaUltimoPago || '-';
 
