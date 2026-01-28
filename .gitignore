@@ -213,6 +213,8 @@ crear cookies prueba.txt
 crear cookies prueba.txt
 CLAUDE.md
 DjangoSkill.md
+staticfiles/
+gunicorn_config.py
 .agents/vfp_tcp.md
 .agents/tech_lead.md
 .agents/security.md

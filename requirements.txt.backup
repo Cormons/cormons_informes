@@ -1,0 +1,4 @@
+Django==5.1.4
+pycryptodome==3.21.0
+gunicorn==23.0.0
+
