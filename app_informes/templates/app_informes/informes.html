@@ -216,11 +216,29 @@
     {% include 'app_informes/modals/ventas/modal_estado_cliente.html' %}
 
     <!-- JavaScript -->
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <!-- Dependencias primero - desde core/ -->
-    <script src="{% static 'js/core/modales.js' %}"></script>
-    <script src="{% static 'js/core/modalLogout.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ============================================
+         JS LOAD ORDER (dependencias estrictas)
+         ============================================
+         1. Bootstrap bundle (externo)
+         2. core/utilidades.js    - Base: getCookie, formatearMoneda
+         3. core/modales.js       - Modales: mostrarAlerta, mostrarErrorBloqueante
+         4. core/vfpClient.js     - VFP.fetch, VFP.manejar (usa: getCookie, modales)
+         5. core/uiHelpers.js     - UI.mostrar, UI.ocultar, etc.
+         6. core/modalLogout.js   - Logout modal (usa: getCookie)
+         7. modules/*             - Módulos de negocio (usan: core/*)
+         8. permisos.js           - Carga permisos (usa: mostrarErrorBloqueante)
+         9. tabs.js               - Gestión de tabs
+         10. informes.js          - Orquestador principal (SIEMPRE al final)
+         ============================================ -->
+
+    <!-- Core: utilidades y servicios base -->
     <script src="{% static 'js/core/utilidades.js' %}"></script>
+    <script src="{% static 'js/core/modales.js' %}"></script>
+    <script src="{% static 'js/core/vfpClient.js' %}"></script>
+    <script src="{% static 'js/core/uiHelpers.js' %}"></script>
+    <script src="{% static 'js/core/modalLogout.js' %}"></script>
 
     <!-- Módulos de negocio -->
     <script src="{% static 'js/modules/finanzas/cheques.js' %}"></script>
@@ -231,7 +249,7 @@
     <script src="{% static 'js/permisos.js' %}"></script>
     <script src="{% static 'js/tabs.js' %}"></script>
 
-    <!-- Inicialización general al final -->
+    <!-- Orquestador principal (SIEMPRE al final) -->
     <script src="{% static 'js/informes.js' %}"></script>
     {% endif %}
 </body>

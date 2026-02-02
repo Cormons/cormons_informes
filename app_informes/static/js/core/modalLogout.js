@@ -1,9 +1,7 @@
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`); 
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
-}
+// ============================================
+// MODAL LOGOUT - Modal de confirmación de cierre de sesión
+// Dependencias: utilidades.js 
+// ============================================
 
 // Función para cargar el modal de logout
 function loadLogoutModal() {
