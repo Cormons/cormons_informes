@@ -1,0 +1,124 @@
+<!-- Modal: Cargar Pedido (Wizard 4 pasos) -->
+<div class="modal fade" id="modalCargarPedido" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header modal-header-gradient ventas">
+                <h5 class="modal-title">
+                    <i class="fa-solid fa-cart-shopping me-2"></i>Cargar Pedido
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- STEPPER -->
+            <div class="wizard-stepper px-4 pt-3">
+                <div class="stepper-container">
+                    <!-- Paso 1 -->
+                    <div class="stepper-step active" data-step="1">
+                        <div class="stepper-circle">
+                            <span class="step-number">1</span>
+                            <i class="fas fa-check step-check d-none"></i>
+                        </div>
+                        <span class="stepper-label">Cliente</span>
+                    </div>
+                    <div class="stepper-line"></div>
+                    <!-- Paso 2 -->
+                    <div class="stepper-step" data-step="2">
+                        <div class="stepper-circle">
+                            <span class="step-number">2</span>
+                            <i class="fas fa-check step-check d-none"></i>
+                        </div>
+                        <span class="stepper-label">Lista Precio</span>
+                    </div>
+                    <div class="stepper-line"></div>
+                    <!-- Paso 3 -->
+                    <div class="stepper-step" data-step="3">
+                        <div class="stepper-circle">
+                            <span class="step-number">3</span>
+                            <i class="fas fa-check step-check d-none"></i>
+                        </div>
+                        <span class="stepper-label">Productos</span>
+                    </div>
+                    <div class="stepper-line"></div>
+                    <!-- Paso 4 -->
+                    <div class="stepper-step" data-step="4">
+                        <div class="stepper-circle">
+                            <span class="step-number">4</span>
+                            <i class="fas fa-check step-check d-none"></i>
+                        </div>
+                        <span class="stepper-label">Resumen</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BODY: Contenido dinamico por paso -->
+            <div class="modal-body">
+                <!-- PASO 1: Busqueda y seleccion de cliente -->
+                <div class="wizard-step-content" id="wizardStep1">
+                    <!-- Busqueda de cliente (version para pedidos) -->
+                    <div id="pedidoBusquedaCliente">
+                        {% include 'app_informes/modals/ventas/busqueda_cliente_pedido.html' %}
+                    </div>
+
+                    <!-- Resumen del cliente seleccionado -->
+                    <div id="pedidoClienteSeleccionado" class="d-none">
+                        <div class="info-card-header mb-3">
+                            <div class="icon-box md primary me-3">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="flex-grow-1" style="min-width: 0;">
+                                <h5 class="mb-1 fw-bold" style="word-wrap: break-word;">
+                                    [<span id="pedidoClienteCodigo">-</span>]
+                                    <span id="pedidoClienteNombre">-</span>
+                                </h5>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <span class="badge-custom neutral">
+                                        <i class="fas fa-id-card me-1"></i>
+                                        <span id="pedidoClienteCuit">-</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnCambiarCliente">
+                                <i class="fas fa-exchange-alt me-1"></i>Cambiar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 2: Seleccion de lista de precio (placeholder) -->
+                <div class="wizard-step-content d-none" id="wizardStep2">
+                    <div class="text-center py-5 text-muted">
+                        <i class="fas fa-tags fa-3x mb-3"></i>
+                        <p>Seleccion de lista de precio - Por implementar</p>
+                    </div>
+                </div>
+
+                <!-- PASO 3: Busqueda y carga de productos (placeholder) -->
+                <div class="wizard-step-content d-none" id="wizardStep3">
+                    <div class="text-center py-5 text-muted">
+                        <i class="fas fa-boxes fa-3x mb-3"></i>
+                        <p>Busqueda y carga de productos - Por implementar</p>
+                    </div>
+                </div>
+
+                <!-- PASO 4: Resumen/detalle (placeholder) -->
+                <div class="wizard-step-content d-none" id="wizardStep4">
+                    <div class="text-center py-5 text-muted">
+                        <i class="fas fa-file-invoice fa-3x mb-3"></i>
+                        <p>Resumen del pedido - Por implementar</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER: Navegacion del wizard -->
+            <div class="modal-footer wizard-footer">
+                <button type="button" class="btn btn-outline-secondary" id="btnWizardAtras" disabled>
+                    <i class="fas fa-arrow-left me-1"></i>ATRAS
+                </button>
+                <button type="button" class="btn btn-primary" id="btnWizardSiguiente" disabled>
+                    SIGUIENTE<i class="fas fa-arrow-right ms-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

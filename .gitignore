@@ -224,3 +224,4 @@ gunicorn_config.py
 .agents/frontend_vanilla.md
 .agents/devops.md
 .agents/backend_django.md
+.github/copilot-instructions.md

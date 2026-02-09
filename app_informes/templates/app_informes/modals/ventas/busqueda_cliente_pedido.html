@@ -1,0 +1,53 @@
+<!-- Sección de Búsqueda de Cliente para Pedidos -->
+<div id="seccionBusquedaPedido">
+    <div class="mb-3">
+        <label class="form-label fw-bold">Tipo de búsqueda:</label>
+        <div class="btn-group w-100" role="group">
+            <input type="radio" class="btn-check" name="tipoBusquedaPedido" id="radioCodigoPedido" value="codigo" checked>
+            <label class="btn btn-outline-primary" for="radioCodigoPedido">
+                <i class="fas fa-hashtag me-1"></i>Por Código
+            </label>
+
+            <input type="radio" class="btn-check" name="tipoBusquedaPedido" id="radioDescripcionPedido" value="descripcion">
+            <label class="btn btn-outline-primary" for="radioDescripcionPedido">
+                <i class="fas fa-font me-1"></i>Por Descripción
+            </label>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="inputBusquedaPedido" class="form-label fw-bold">
+            <span id="labelBusquedaPedido">Código del cliente:</span>
+        </label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="inputBusquedaPedido" placeholder="Ingrese el código">
+            <button class="btn btn-primary" type="button" id="btnBuscarPedido">
+                <i class="fas fa-search me-1"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mensaje de error en búsqueda -->
+    <div id="errorBusquedaPedido" class="alert alert-danger d-none">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <span id="errorBusquedaMensajePedido"></span>
+    </div>
+
+    <!-- Loading búsqueda -->
+    <div id="loadingBusquedaPedido" class="text-center py-3 d-none">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Buscando...</span>
+        </div>
+        <p class="mt-2 text-muted">Buscando cliente...</p>
+    </div>
+
+    <!-- Lista de resultados (múltiples clientes) -->
+    <div id="listaResultadosPedido" class="d-none">
+        <hr>
+        <h6 class="fw-bold mb-3">Seleccione un cliente:</h6>
+        <div id="listaClientesContainerPedido" class="list-group" style="max-height: 50vh; overflow-y: auto;"></div>
+        <div class="d-flex justify-content-end mt-2">
+            <span class="text-muted small fw-semibold">Clientes encontrados: <span id="cantidadClientesEncontradosPedido">0</span></span>
+        </div>
+    </div>
+</div>

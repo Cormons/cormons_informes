@@ -100,3 +100,36 @@ def comando_clienteCodigo(token, usuario, request, codigo_cliente):
         "mensaje": r.get("mensaje", ""),
         "CLIENTE": cliente
     }
+
+def comando_listaPrecios(token, usuario, request):
+    mensaje = {
+        "Comando": "listaPrecios",
+        "Token": token,
+        "Vista": "INFORMES",
+        "UsrActivo": usuario
+    }
+    r = enviar_consulta_tcp(mensaje, request=request)
+    return r
+
+def comando_busquedaProductoCodigo(token, usuario, request, codigo_producto, deposito=1):
+    mensaje = {
+        "Comando": "productoCodigo",
+        "Token": token,
+        "Vista": "INFORMES",
+        "UsrActivo": usuario,
+        "codigoProducto": int(codigo_producto),
+        "deposito": int(deposito)
+    }
+    r = enviar_consulta_tcp(mensaje, request=request)
+    return r
+
+def comando_busquedaProductoDescripcion(token, usuario, request, descripcion):
+    mensaje = {
+        "Comando": "productoDescripcion",
+        "Token": token,
+        "Vista": "INFORMES",
+        "UsrActivo": usuario,
+        "descripcion": descripcion
+    }
+    r = enviar_consulta_tcp(mensaje, request=request)
+    return r

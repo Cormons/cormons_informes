@@ -268,7 +268,7 @@
     // ============================================
     
     document.addEventListener('DOMContentLoaded', inicializarModales);
-
+    
     // ============================================
     // EXPONER FUNCIONES GLOBALES
     // ============================================
