@@ -85,10 +85,10 @@
     // ============================================
 
     function inicializarBusquedaClientePedido() {
-        const btnBuscar = document.getElementById('btnBuscarPedido');
-        const inputBusqueda = document.getElementById('inputBusquedaPedido');
-        const radioCodigo = document.getElementById('radioCodigoPedido');
-        const radioDescripcion = document.getElementById('radioDescripcionPedido');
+        const btnBuscar = document.getElementById('pedidoBtnBuscar');
+        const inputBusqueda = document.getElementById('pedidoInputBusqueda');
+        const radioCodigo = document.getElementById('pedidoRadioCodigo');
+        const radioDescripcion = document.getElementById('pedidoRadioDescripcion');
 
         if (btnBuscar) {
             btnBuscar.addEventListener('click', ejecutarBusquedaPedido);
@@ -115,15 +115,15 @@
 
     function cambiarTipoBusquedaPedido(tipo) {
         tipoBusquedaPedido = tipo;
-        const label = document.getElementById('labelBusquedaPedido');
-        const input = document.getElementById('inputBusquedaPedido');
+        const label = document.getElementById('pedidoLabelBusqueda');
+        const input = document.getElementById('pedidoInputBusqueda');
 
         if (tipo === 'codigo') {
             if (label) label.textContent = 'Código del cliente:';
             if (input) input.placeholder = 'Ingrese el código';
         } else {
             if (label) label.textContent = 'Descripción (Razón Social):';
-            if (input) input.placeholder = 'Ingrese la descripción';
+            if (input) input.placeholder = 'Ingrese razón social o nombre';
         }
 
         if (input) input.value = '';
@@ -131,14 +131,14 @@
     }
 
     function resetearBusquedaPedido() {
-        const input = document.getElementById('inputBusquedaPedido');
-        const radioCodigo = document.getElementById('radioCodigoPedido');
+        const input = document.getElementById('pedidoInputBusqueda');
+        const radioCodigo = document.getElementById('pedidoRadioCodigo');
 
         if (input) input.value = '';
         if (radioCodigo) radioCodigo.checked = true;
         tipoBusquedaPedido = 'codigo';
 
-        const label = document.getElementById('labelBusquedaPedido');
+        const label = document.getElementById('pedidoLabelBusqueda');
         if (label) label.textContent = 'Código del cliente:';
         if (input) input.placeholder = 'Ingrese el código';
 
@@ -147,9 +147,9 @@
     }
 
     function mostrarSeccionBusquedaPedido(seccion) {
-        const seccionBusqueda = document.getElementById('seccionBusquedaPedido');
-        const loadingBusqueda = document.getElementById('loadingBusquedaPedido');
-        const listaResultados = document.getElementById('listaResultadosPedido');
+        const seccionBusqueda = document.getElementById('pedidoSeccionBusqueda');
+        const loadingBusqueda = document.getElementById('pedidoLoadingBusqueda');
+        const listaResultados = document.getElementById('pedidoListaResultados');
 
         if (seccionBusqueda) seccionBusqueda.classList.add('d-none');
         if (loadingBusqueda) loadingBusqueda.classList.add('d-none');
@@ -171,7 +171,7 @@
     }
 
     function ejecutarBusquedaPedido() {
-        const inputEl = document.getElementById('inputBusquedaPedido');
+        const inputEl = document.getElementById('pedidoInputBusqueda');
         const input = inputEl ? inputEl.value.trim() : '';
 
         if (!input) {
@@ -262,7 +262,7 @@
     }
 
     function mostrarListaClientesPedido(clientes) {
-        const container = document.getElementById('listaClientesContainerPedido');
+        const container = document.getElementById('pedidoListaClientes');
         if (!container) return;
 
         container.innerHTML = '';
@@ -289,22 +289,22 @@
             container.appendChild(item);
         });
 
-        const cantidadEl = document.getElementById('cantidadClientesEncontradosPedido');
+        const cantidadEl = document.getElementById('pedidoCantidadClientes');
         if (cantidadEl) cantidadEl.textContent = clientes.length;
 
         mostrarSeccionBusquedaPedido('lista');
     }
 
     function mostrarErrorBusquedaPedido(mensaje) {
-        const errorEl = document.getElementById('errorBusquedaPedido');
-        const mensajeEl = document.getElementById('errorBusquedaMensajePedido');
+        const errorEl = document.getElementById('pedidoErrorBusqueda');
+        const mensajeEl = document.getElementById('pedidoErrorMensaje');
 
         if (mensajeEl) mensajeEl.textContent = mensaje;
         if (errorEl) errorEl.classList.remove('d-none');
     }
 
     function ocultarErrorBusquedaPedido() {
-        const errorEl = document.getElementById('errorBusquedaPedido');
+        const errorEl = document.getElementById('pedidoErrorBusqueda');
         if (errorEl) errorEl.classList.add('d-none');
     }
 
@@ -357,11 +357,44 @@
         }
     }
 
-    function irPasoSiguiente() {
+    async function irPasoSiguiente() {
         const pasoActual = estadoPedido.pasoActual;
 
         if (!configPasos[pasoActual].validar()) {
             console.warn('⚠️ Validacion del paso fallida');
+            return;
+        }
+
+        // Paso 1: Consultar lista de precios antes de avanzar
+        if (pasoActual === 1 && estadoPedido.cliente) {
+            const btnSiguiente = document.getElementById('btnWizardSiguiente');
+            const btnAtras = document.getElementById('btnWizardAtras');
+            const textoOriginal = btnSiguiente ? btnSiguiente.innerHTML : '';
+
+            if (btnSiguiente) {
+                btnSiguiente.disabled = true;
+                btnSiguiente.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Consultando...';
+            }
+            if (btnAtras) btnAtras.disabled = true;
+
+            try {
+                await consultarListaPreciosCliente(estadoPedido.cliente.codigo);
+                console.log('✅ Lista de precios cargada, avanzando al paso 2');
+                if (pasoActual < estadoPedido.totalPasos) {
+                    irAPaso(pasoActual + 1);
+                }
+            } catch (err) {
+                console.error('❌ Error al consultar lista de precios:', err);
+                if (window.mostrarErrorBloqueante) {
+                    window.mostrarErrorBloqueante(err.message || 'Error al consultar lista de precios');
+                }
+                // Restaurar botón en caso de error
+                if (btnSiguiente) {
+                    btnSiguiente.innerHTML = textoOriginal;
+                    btnSiguiente.disabled = false;
+                }
+                if (btnAtras) btnAtras.disabled = false;
+            }
             return;
         }
 
@@ -427,13 +460,21 @@
         btnSiguiente.disabled = !pasoValido;
 
         if (pasoActual === estadoPedido.totalPasos) {
-            btnSiguiente.innerHTML = '<i class="fas fa-check me-1"></i>CONFIRMAR';
+            btnSiguiente.innerHTML = '<i class="fas fa-check me-1"></i>Confirmar';
             btnSiguiente.classList.remove('btn-primary');
             btnSiguiente.classList.add('btn-success');
+            btnSiguiente.setAttribute('aria-label', 'Confirmar pedido');
         } else {
-            btnSiguiente.innerHTML = 'SIGUIENTE<i class="fas fa-arrow-right ms-1"></i>';
+            btnSiguiente.innerHTML = 'Siguiente<i class="fas fa-arrow-right ms-1"></i>';
             btnSiguiente.classList.remove('btn-success');
             btnSiguiente.classList.add('btn-primary');
+            btnSiguiente.setAttribute('aria-label', 'Continuar al siguiente paso');
+        }
+
+        // Actualizar título del modal según el paso actual
+        const tituloEl = document.getElementById('tituloModalPedido');
+        if (tituloEl && configPasos[pasoActual]) {
+            tituloEl.textContent = `${configPasos[pasoActual].titulo}`;
         }
     }
 
@@ -478,6 +519,26 @@
     function cambiarCliente() {
         estadoPedido.cliente = null;
         mostrarBusquedaCliente();
+    }
+
+    // ============================================
+    // CONSULTA LISTA DE PRECIOS (PASO 1 → 2)
+    // ============================================
+
+    async function consultarListaPreciosCliente(codigoCliente) {
+        console.log('🔍 Consultando lista de precios para cliente:', codigoCliente);
+        
+        const response = await fetch(`/ventas/lista-precios-cliente/?codigo_cliente=${encodeURIComponent(codigoCliente)}`);
+        
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.error || 'Error al consultar lista de precios');
+        }
+        
+        const data = await response.json();
+        console.log('📦 Lista de precios recibida:', data);
+        estadoPedido.listaPrecio = data;
+        return data;
     }
 
     // ============================================

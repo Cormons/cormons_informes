@@ -1,13 +1,14 @@
 <!-- Modal: Cargar Pedido (Wizard 4 pasos) -->
 <div class="modal fade" id="modalCargarPedido" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <!-- HEADER -->
             <div class="modal-header modal-header-gradient ventas">
                 <h5 class="modal-title">
-                    <i class="fa-solid fa-cart-shopping me-2"></i>Cargar Pedido
+                    <i class="fa-solid fa-cart-shopping me-2"></i>
+                    <span id="tituloModalPedido">Cargar Pedido</span>
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
 
             <!-- STEPPER -->
@@ -51,6 +52,8 @@
                 </div>
             </div>
 
+            <!-- INFORMACIÓN ACUMULADA -->
+
             <!-- BODY: Contenido dinamico por paso -->
             <div class="modal-body">
                 <!-- PASO 1: Busqueda y seleccion de cliente -->
@@ -62,10 +65,10 @@
 
                     <!-- Resumen del cliente seleccionado -->
                     <div id="pedidoClienteSeleccionado" class="d-none">
+                        <div class="mb-2">
+                            <small class="text-muted text-uppercase fw-semibold">Cliente Seleccionado</small>
+                        </div>
                         <div class="info-card-header mb-3">
-                            <div class="icon-box md primary me-3">
-                                <i class="fas fa-user-check"></i>
-                            </div>
                             <div class="flex-grow-1" style="min-width: 0;">
                                 <h5 class="mb-1 fw-bold" style="word-wrap: break-word;">
                                     [<span id="pedidoClienteCodigo">-</span>]
@@ -73,13 +76,15 @@
                                 </h5>
                                 <div class="d-flex gap-2 flex-wrap">
                                     <span class="badge-custom neutral">
-                                        <i class="fas fa-id-card me-1"></i>
                                         <span id="pedidoClienteCuit">-</span>
                                     </span>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnCambiarCliente">
-                                <i class="fas fa-exchange-alt me-1"></i>Cambiar
+                            <button type="button"
+                                    class="btn btn-outline-secondary btn-sm"
+                                    id="btnCambiarCliente"
+                                    aria-label="Cambiar cliente seleccionado">
+                                <i class="fas fa-exchange-alt me-1"></i>Cambiar cliente
                             </button>
                         </div>
                     </div>
@@ -112,11 +117,19 @@
 
             <!-- FOOTER: Navegacion del wizard -->
             <div class="modal-footer wizard-footer">
-                <button type="button" class="btn btn-outline-secondary" id="btnWizardAtras" disabled>
-                    <i class="fas fa-arrow-left me-1"></i>ATRAS
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        id="btnWizardAtras"
+                        disabled
+                        aria-label="Volver al paso anterior">
+                    <i class="fas fa-arrow-left me-1"></i>Atrás
                 </button>
-                <button type="button" class="btn btn-primary" id="btnWizardSiguiente" disabled>
-                    SIGUIENTE<i class="fas fa-arrow-right ms-1"></i>
+                <button type="button"
+                        class="btn btn-primary"
+                        id="btnWizardSiguiente"
+                        disabled
+                        aria-label="Continuar al siguiente paso">
+                    Siguiente<i class="fas fa-arrow-right ms-1"></i>
                 </button>
             </div>
         </div>

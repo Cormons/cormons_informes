@@ -585,7 +585,7 @@
 
 .stepper-label {
     font-size: 0.75rem;
-    color: var(--color-gray-500);
+    color: var(--color-gray-600);
     text-align: center;
     font-weight: 500;
     transition: color var(--transition-fast);
@@ -628,8 +628,29 @@
 .wizard-footer .btn {
     min-width: 120px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   LISTA CLIENTES SCROLL
+   ============================================ */
+.lista-clientes-scroll {
+    max-height: clamp(250px, 50vh, 400px);
+    overflow-y: auto;
+}
+
+/* ============================================
+   MODAL CARGAR PEDIDO
+   ============================================ */
+#modalCargarPedido .modal-dialog {
+    margin: 1.5rem;
+    max-height: calc(100vh - 3rem);
+}
+
+@media (max-width: 768px) {
+    #modalCargarPedido .modal-dialog {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+    }
 }
 
 /* ============================================
@@ -659,5 +680,15 @@
     .wizard-footer .btn {
         min-width: 100px;
         font-size: 0.85rem;
+    }
+
+    .info-card-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 12px;
+    }
+
+    .info-card-header .btn-sm {
+        width: 100%;
     }
 }

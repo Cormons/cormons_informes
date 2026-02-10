@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from app_informes.utils import obtener_datos_cookies
 from app_informes.core.vfp_comandos import formatear_fecha
-from .vfp_comandos import comando_clienteDescripcion, comando_clienteCodigo
+from .vfp_comandos import comando_clienteDescripcion, comando_clienteCodigo, comando_listaPrecios_cliente
 
 
 @require_http_methods(["GET"])
@@ -107,5 +107,47 @@ def buscarClienteCodigo_view(request):
     # 8) Devolver datos
     return JsonResponse({
         "CLIENTE": cliente,
+        "Mensaje": respuesta_vfp.get("mensaje", "")
+    })
+
+
+@require_http_methods(["GET"])
+def listaPrecios_view(request):
+    """
+    Endpoint AJAX para obtener lista de precios de un cliente
+    
+    Query params:
+        codigo_cliente: Código del cliente
+    """
+    # 1) Obtener cookies
+    token, datos_conexion, usuario, error_mensaje = obtener_datos_cookies(request)
+    
+    if error_mensaje:
+        return JsonResponse({"error": error_mensaje}, status=401)
+    
+    # 2) Obtener parámetro de cliente
+    codigo_cliente = request.GET.get('codigo_cliente', '').strip()
+    
+    if not codigo_cliente:
+        return JsonResponse({"error": "Debe ingresar un código de cliente"}, status=400)
+
+    if not codigo_cliente.isdigit():
+        return JsonResponse({"error": "El código debe ser numérico"}, status=400)
+
+    # 3) Consultar VFP
+    respuesta_vfp = comando_listaPrecios_cliente(token, usuario, request, codigo_cliente)
+    
+    # 4) Sin respuesta del servidor
+    if not respuesta_vfp:
+        return JsonResponse({"error": "Sin respuesta del servidor"}, status=500)
+    
+    # 5) VFP devolvió estado=False
+    estado_vfp = respuesta_vfp.get("estado")
+    if estado_vfp is False or estado_vfp == "False":
+        return JsonResponse({"error": respuesta_vfp.get("mensaje", "")}, status=400)
+
+    # 6) Devolver datos de lista de precios
+    return JsonResponse({
+        "ListaPrecios": respuesta_vfp.get("listaprecios", respuesta_vfp.get("LISTAPRECIOS", {})),
         "Mensaje": respuesta_vfp.get("mensaje", "")
     })

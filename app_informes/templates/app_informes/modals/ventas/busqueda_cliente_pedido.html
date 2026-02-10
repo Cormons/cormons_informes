@@ -1,40 +1,49 @@
 <!-- Sección de Búsqueda de Cliente para Pedidos -->
-<div id="seccionBusquedaPedido">
+<div id="pedidoSeccionBusqueda">
     <div class="mb-3">
         <label class="form-label fw-bold">Tipo de búsqueda:</label>
         <div class="btn-group w-100" role="group">
-            <input type="radio" class="btn-check" name="tipoBusquedaPedido" id="radioCodigoPedido" value="codigo" checked>
-            <label class="btn btn-outline-primary" for="radioCodigoPedido">
+            <input type="radio" class="btn-check" name="pedidoTipoBusqueda" id="pedidoRadioCodigo" value="codigo" checked>
+            <label class="btn btn-outline-primary" for="pedidoRadioCodigo">
                 <i class="fas fa-hashtag me-1"></i>Por Código
             </label>
 
-            <input type="radio" class="btn-check" name="tipoBusquedaPedido" id="radioDescripcionPedido" value="descripcion">
-            <label class="btn btn-outline-primary" for="radioDescripcionPedido">
+            <input type="radio" class="btn-check" name="pedidoTipoBusqueda" id="pedidoRadioDescripcion" value="descripcion">
+            <label class="btn btn-outline-primary" for="pedidoRadioDescripcion">
                 <i class="fas fa-font me-1"></i>Por Descripción
             </label>
         </div>
     </div>
 
     <div class="mb-3">
-        <label for="inputBusquedaPedido" class="form-label fw-bold">
-            <span id="labelBusquedaPedido">Código del cliente:</span>
+        <label for="pedidoInputBusqueda" class="form-label fw-bold">
+            <span id="pedidoLabelBusqueda">Código del cliente:</span>
         </label>
         <div class="input-group">
-            <input type="text" class="form-control" id="inputBusquedaPedido" placeholder="Ingrese el código">
-            <button class="btn btn-primary" type="button" id="btnBuscarPedido">
-                <i class="fas fa-search me-1"></i>
+            <input type="text"
+                   class="form-control"
+                   id="pedidoInputBusqueda"
+                   placeholder="Ingrese el código"
+                   required
+                   autocomplete="off"
+                   aria-label="Campo de búsqueda de cliente">
+            <button class="btn btn-primary"
+                    type="button"
+                    id="pedidoBtnBuscar"
+                    aria-label="Buscar cliente">
+                <i class="fas fa-search me-1"></i>Buscar
             </button>
         </div>
     </div>
 
     <!-- Mensaje de error en búsqueda -->
-    <div id="errorBusquedaPedido" class="alert alert-danger d-none">
+    <div id="pedidoErrorBusqueda" class="alert alert-danger d-none">
         <i class="fas fa-exclamation-circle me-2"></i>
-        <span id="errorBusquedaMensajePedido"></span>
+        <span id="pedidoErrorMensaje"></span>
     </div>
 
     <!-- Loading búsqueda -->
-    <div id="loadingBusquedaPedido" class="text-center py-3 d-none">
+    <div id="pedidoLoadingBusqueda" class="text-center py-3 d-none">
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Buscando...</span>
         </div>
@@ -42,12 +51,12 @@
     </div>
 
     <!-- Lista de resultados (múltiples clientes) -->
-    <div id="listaResultadosPedido" class="d-none">
+    <div id="pedidoListaResultados" class="d-none">
         <hr>
         <h6 class="fw-bold mb-3">Seleccione un cliente:</h6>
-        <div id="listaClientesContainerPedido" class="list-group" style="max-height: 50vh; overflow-y: auto;"></div>
+        <div id="pedidoListaClientes" class="list-group lista-clientes-scroll"></div>
         <div class="d-flex justify-content-end mt-2">
-            <span class="text-muted small fw-semibold">Clientes encontrados: <span id="cantidadClientesEncontradosPedido">0</span></span>
+            <span class="text-muted small fw-semibold">Clientes encontrados: <span id="pedidoCantidadClientes">0</span></span>
         </div>
     </div>
 </div>

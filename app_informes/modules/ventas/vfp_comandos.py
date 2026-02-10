@@ -111,6 +111,29 @@ def comando_listaPrecios(token, usuario, request):
     r = enviar_consulta_tcp(mensaje, request=request)
     return r
 
+def comando_listaPrecios_cliente(token, usuario, request, codigo_cliente):
+    """
+    Obtiene la lista de precios asignada a un cliente
+    
+    Args:
+        token: Token de autenticación
+        usuario: Usuario activo
+        request: Request de Django
+        codigo_cliente: Código del cliente
+    
+    Returns:
+        dict: Respuesta de VFP con lista de precios
+    """
+    mensaje = {
+        "Comando": "listaPreciosCliente",
+        "Token": token,
+        "Vista": "INFORMES",
+        "UsrActivo": usuario,
+        "codigoCliente": int(codigo_cliente)
+    }
+    r = enviar_consulta_tcp(mensaje, request=request)
+    return r
+
 def comando_busquedaProductoCodigo(token, usuario, request, codigo_producto, deposito=1):
     mensaje = {
         "Comando": "productoCodigo",
